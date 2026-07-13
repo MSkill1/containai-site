@@ -551,16 +551,46 @@
                 <div class="screenshot-caption">The Zynkbot interface — conversation, memory panel, and knowledge base access in one window</div>
             </div>
 
-            <div class="platform-badges">
-                <span class="badge supported">✅ Windows 10/11</span>
-                <span class="badge supported">✅ Linux (Ubuntu, Arch, Fedora)</span>
-                <span class="badge planned">📱 Android (Planned 2026)</span>
-                <span class="badge planned">📱 iOS (Planned 2026)</span>
+            <!-- Download cards -->
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 30px 0 16px;">
+                <div style="background: #1e2030; border: 1px solid #50fa7b; border-radius: 12px; padding: 20px 28px; text-align: center; min-width: 180px;">
+                    <div style="font-size: 1.6rem; margin-bottom: 6px;">🪟</div>
+                    <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 4px;">Windows 10 / 11</div>
+                    <div style="font-size: 0.8rem; color: #6272a4; margin-bottom: 14px;">Free — no account required</div>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_x64-setup.exe"
+                       class="cta-button" style="display: block; margin-bottom: 8px; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .exe</a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_x64_en-US.msi"
+                       class="cta-button secondary" style="display: block; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .msi</a>
+                </div>
+
+                <div style="background: #1e2030; border: 1px solid #50fa7b; border-radius: 12px; padding: 20px 28px; text-align: center; min-width: 180px;">
+                    <div style="font-size: 1.6rem; margin-bottom: 6px;">🐧</div>
+                    <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 4px;">Linux</div>
+                    <div style="font-size: 0.8rem; color: #6272a4; margin-bottom: 14px;">Ubuntu · Arch · Fedora</div>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_amd64.deb"
+                       class="cta-button" style="display: block; margin-bottom: 8px; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .deb</a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_amd64.AppImage"
+                       class="cta-button secondary" style="display: block; margin-bottom: 8px; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .AppImage</a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot-0.9.0-1.x86_64.rpm"
+                       class="cta-button secondary" style="display: block; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .rpm</a>
+                </div>
+
+                <div style="background: #1e2030; border: 1px solid #44475a; border-radius: 12px; padding: 20px 28px; text-align: center; min-width: 180px; opacity: 0.7;">
+                    <div style="font-size: 1.6rem; margin-bottom: 6px;">📱</div>
+                    <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 4px;">Android / iOS</div>
+                    <div style="font-size: 0.8rem; color: #6272a4; margin-bottom: 14px;">In development — 2026</div>
+                    <div style="font-size: 0.85rem; color: #6272a4; padding: 8px;">Coming soon</div>
+                </div>
             </div>
 
-            <div class="cta-section">
-                <a href="https://github.com/MSkill1/zynkbot/releases/latest" class="cta-button">Download on GitHub</a>
-                <a href="docs/" class="cta-button secondary">View Documentation</a>
+            <p style="color: #6272a4; font-size: 0.85rem; margin-bottom: 20px;">
+                Free &amp; open source · No account · No telemetry · Data stays on your device
+            </p>
+
+            <div style="text-align: center;">
+                <a href="https://github.com/MSkill1/zynkbot" class="cta-button secondary" style="font-size: 0.9rem; padding: 8px 20px;">GitHub</a>
+                <a href="docs/" class="cta-button secondary" style="font-size: 0.9rem; padding: 8px 20px;">Documentation</a>
+                <a href="https://github.com/MSkill1/zynkbot/releases/latest" class="cta-button secondary" style="font-size: 0.9rem; padding: 8px 20px;">All releases</a>
             </div>
         </section>
 
@@ -1049,8 +1079,9 @@
                 <p>
                     All three features require devices to be on the same WiFi or LAN network.
                     None of them use external servers or require an internet connection.
-                    Note: LAN traffic between devices is currently unencrypted.
-                    End-to-end encryption for all three features is on the roadmap for v1.0.
+                    All LAN traffic between devices is encrypted with TLS 1.3. Certificates are
+                    generated automatically on first run and pinned on pairing — no certificate
+                    authority required.
                 </p>
 
                 <div class="screenshot-wrap">
