@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ZynkCluster — distributed Mixture of Experts inference across consumer devices on a local network. Run models too large for any single machine, entirely offline.">
+    <meta name="keywords" content="ZynkCluster, distributed inference, Mixture of Experts, MoE, local AI, consumer GPU, privacy AI, ContainAI">
+    <meta name="author" content="Matthew Skillman">
+    <title>ZynkCluster — Distributed AI Inference | ContainAI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        header { padding: 40px 20px; border-bottom: 1px solid #44475a; }
+
+        .breadcrumb { font-size: 0.9rem; color: #6272a4; margin-bottom: 20px; }
+        .breadcrumb a { color: #8be9fd; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8be9fd 0%, #50fa7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            background: #44475a;
+            color: #8be9fd;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border: 1px solid #6272a4;
+        }
+
+        .tagline { font-size: 1.2rem; color: #ccd4ec; margin-top: 8px; }
+
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero h2 { font-size: 2rem; color: #f8f8f2; margin-bottom: 20px; }
+        .hero p { font-size: 1.15rem; color: #ccd4ec; margin-bottom: 16px; line-height: 1.85; }
+
+        .cta-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 36px;
+            background: #8be9fd;
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover { background: #50fa7b; transform: translateY(-2px); }
+        .cta-button.secondary { background: #44475a; color: #8be9fd; }
+        .cta-button.secondary:hover { background: #6272a4; }
+
+        .section-divider { border: none; border-top: 1px solid #44475a; margin: 0; }
+
+        .content-section {
+            padding: 60px 20px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .content-section h2 { font-size: 1.9rem; color: #8be9fd; margin-bottom: 24px; }
+        .content-section h3 { font-size: 1.3rem; color: #50fa7b; margin-top: 32px; margin-bottom: 14px; }
+        .content-section p { font-size: 1.05rem; color: #ccd4ec; margin-bottom: 20px; line-height: 1.85; }
+        .content-section strong { color: #f8f8f2; }
+
+        .section-dark {
+            background: #1a1d28;
+            padding: 60px 20px;
+        }
+
+        .section-dark .content-inner { max-width: 860px; margin: 0 auto; }
+        .section-dark h2 { font-size: 1.9rem; color: #8be9fd; margin-bottom: 24px; }
+        .section-dark h3 { font-size: 1.3rem; color: #50fa7b; margin-top: 32px; margin-bottom: 14px; }
+        .section-dark p { font-size: 1.05rem; color: #ccd4ec; margin-bottom: 20px; line-height: 1.85; }
+        .section-dark strong { color: #f8f8f2; }
+
+        .diagram-block {
+            background: #1a1d28;
+            border-left: 4px solid #8be9fd;
+            border-radius: 0 8px 8px 0;
+            padding: 24px 28px;
+            margin: 28px 0;
+            overflow-x: auto;
+        }
+
+        .diagram-block pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #50fa7b;
+            line-height: 1.7;
+            white-space: pre;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th {
+            background: #44475a;
+            color: #8be9fd;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #44475a;
+            color: #ccd4ec;
+            vertical-align: top;
+        }
+
+        .comparison-table tr:hover td { background: #2d2f40; }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        .stat-card {
+            background: #44475a;
+            border-radius: 10px;
+            padding: 22px;
+            border-left: 4px solid #8be9fd;
+        }
+
+        .stat-card:nth-child(2) { border-left-color: #50fa7b; }
+
+        .stat-card h4 { color: #f8f8f2; margin-bottom: 12px; font-size: 1rem; }
+        .stat-card p { color: #9aa5c4; font-size: 0.9rem; margin-bottom: 6px; line-height: 1.6; }
+        .stat-card .highlight { color: #50fa7b; font-weight: 600; }
+
+        .roadmap-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .roadmap-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #44475a;
+            color: #ccd4ec;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .roadmap-list li:last-child { border-bottom: none; }
+
+        .roadmap-list .phase {
+            color: #8be9fd;
+            font-weight: 600;
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+
+        .pull-quote {
+            background: #1a1d28;
+            border-left: 4px solid #50fa7b;
+            padding: 22px 26px;
+            border-radius: 0 8px 8px 0;
+            margin: 32px 0;
+        }
+
+        .pull-quote p {
+            font-size: 1.1rem;
+            color: #f8f8f2;
+            font-style: italic;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 60px;
+        }
+
+        footer a { color: #8be9fd; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Section nav */
+        .section-nav {
+            background: #1a1d28;
+            border-top: 1px solid #44475a;
+            border-bottom: 1px solid #44475a;
+            padding: 14px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .section-nav a {
+            color: #8be9fd;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0 12px;
+            opacity: 0.75;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .section-nav a:hover { opacity: 1; }
+        .section-nav .sep { color: #44475a; }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2rem; }
+            .hero h2 { font-size: 1.5rem; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.85rem; }
+            .comparison-table th, .comparison-table td { padding: 10px 10px; }
+            .diagram-block pre { font-size: 0.75rem; }
+            .section-nav { overflow-x: auto; white-space: nowrap; text-align: left; padding: 12px 16px; }
+        }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="breadcrumb">
+                <a href="../">ContainAI</a> / <a href="../zynkbot/">Zynkbot</a> / ZynkCluster
+            </div>
+            <div class="logo">ZynkCluster</div>
+            <div class="status-badge">Ongoing Research &amp; Development</div>
+            <div class="tagline">Distributed AI inference across consumer devices — no cloud, no datacenter</div>
+        </header>
+    </div>
+
+    <nav class="section-nav">
+        <a href="#unlocks">What It Unlocks</a><span class="sep"> · </span>
+        <a href="#open-source">Why Open Source</a><span class="sep"> · </span>
+        <a href="#how-it-works">How It Works</a><span class="sep"> · </span>
+        <a href="#routing">Expert Routing</a><span class="sep"> · </span>
+        <a href="#comparison">Comparison</a><span class="sep"> · </span>
+        <a href="#performance">Performance</a><span class="sep"> · </span>
+        <a href="#roadmap">Roadmap</a><span class="sep"> · </span>
+        <a href="#questions">Open Questions</a><span class="sep"> · </span>
+        <a href="#research">Research</a>
+    </nav>
+
+    <section class="hero">
+        <h2>Run Models Too Large for Any Single Device</h2>
+        <p>
+            Most large AI models are constrained by how much VRAM a single machine has.
+            A model like Mixtral 8x22B requires roughly 140GB of VRAM — more than any
+            single consumer GPU can hold. ZynkCluster proposes distributing that model
+            across multiple devices on your local network, using each machine's GPU to
+            run a different part of the model simultaneously. Models that are simply
+            out of reach on a single consumer machine become accessible across hardware
+            you already own.
+        </p>
+        <p>
+            No cloud. No subscription. No data leaving your network.
+        </p>
+        <div class="cta-section">
+            <a href="https://github.com/MSkill1/zynkbot/tree/main/labs/moe_poc" class="cta-button">Architecture Docs &amp; Code</a>
+            <a href="../zynkbot/" class="cta-button secondary">Back to Zynkbot</a>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <div id="unlocks" class="section-dark">
+        <div class="content-inner">
+            <h2>What This Actually Unlocks</h2>
+            <p>
+                Today, anyone who wants to run AI privately faces a hard constraint: you're limited
+                to whatever fits in a single GPU's memory. A typical PC with a gaming-grade graphics
+                card — an NVIDIA RTX 3090, for example — has 24GB of VRAM. That's enough for a
+                capable local model, but nowhere near the models that are genuinely impressive at
+                reasoning, nuance, and long context. Those require 80GB, 140GB, more.
+            </p>
+            <p>
+                So in practice, people who want that level of quality send their data to a cloud
+                service. That means your questions, your documents, your personal context — all of
+                it going to a server you don't control, under terms of service you mostly didn't read,
+                retained and used in ways that aren't publicly disclosed.
+            </p>
+            <p>
+                ZynkCluster's goal is to close that gap. Pool the GPU memory across two or three
+                PCs on your home network, and models that were simply out of reach become runnable —
+                privately, offline, at no ongoing cost.
+            </p>
+
+            <h3>Concrete use cases this enables</h3>
+
+            <p><strong>Sensitive information you'd never type into ChatGPT.</strong> Medical questions,
+            legal documents, financial records, therapy notes, business strategy. Anything where the
+            answer to "where does this data go?" matters. With ZynkCluster, it doesn't go anywhere —
+            it stays on your hardware.</p>
+
+            <p><strong>Zynkbot with a capable model.</strong> Zynkbot already stores a detailed memory
+            of who you are — your habits, your health, your family, your work. That's exactly the kind
+            of data you don't want being used by a corporation to build a profile on you. Using a cloud
+            API also means losing those capabilities when your internet is down, or if you're in a
+            developing region or a heavily monitored network environment. ZynkCluster means Zynkbot
+            can run a genuinely capable model against that memory without any of it leaving
+            your network.</p>
+
+            <p><strong>No content restrictions.</strong> Cloud providers impose policies on what their
+            models will discuss — for liability reasons, business reasons, or both. Open models running
+            locally have no such restrictions. For researchers, writers, medical professionals, anyone who desires a non-sanitized response or with 
+            other legitimate needs, that matters.</p>
+
+            <p><strong>Hardware you already have, doing something useful.</strong> Most people with
+            more than one computer have GPU capacity sitting idle. A gaming PC in another room, an
+            older desktop that still works — pooled together over your home network, they become a
+            meaningful compute cluster. You're not buying anything new; you're using what you own.</p>
+
+            <p><strong>No ongoing cost.</strong> Download the model weights once. After that, inference
+            is free. No subscription, no per-token billing, no API key.</p>
+
+            <p><strong>Your phone as a cluster node (future).</strong> Modern smartphones have capable
+            GPUs and dedicated neural processing units. Participating as a low-weight node — hosting
+            one or two experts while plugged in and idle — is architecturally plausible and is a
+            planned Phase 4 research area. See hardware notes below.</p>
+
+            <h3>Hardware requirements and compatibility</h3>
+            <p>
+                The current target is PCs with discrete GPUs running NVIDIA CUDA or AMD ROCm — the
+                software layers that enable general-purpose GPU compute. Cards like the NVIDIA RTX
+                3060/3070/3080/3090 or AMD RX 6800/7900 series qualify. These are the same chips used
+                in ML research; they're marketed and sold for gaming but are identical hardware.
+            </p>
+            <p>
+                <strong>Apple Silicon (M1/M2/M3/M4 Macs)</strong> — a near-term future target.
+                Unified memory architecture means the GPU and CPU share the same RAM pool, so an M2
+                Max with 96GB can hold substantial model weight. Support via llama.cpp's Metal backend
+                is architecturally plausible and on the roadmap.
+            </p>
+            <p>
+                <strong>Android phones</strong> — a longer-term research area. Modern flagship
+                Android phones carry hardware that can run inference: Qualcomm Snapdragon chips include
+                an Adreno GPU and a Hexagon NPU, and llama.cpp has a Qualcomm QNN backend. A phone
+                with 12GB RAM could potentially host one or two experts from a smaller MoE model at
+                4-bit quantization. The real constraints are thermal throttling under sustained compute
+                load, RAM shared with the OS, and battery drain. Practically, a phone would need to be
+                plugged in, on WiFi, and idle. This is Phase 4 research — dependent on the core
+                cluster proving out first.
+            </p>
+            <p>
+                Running LLMs on phones is already an active area of development. These projects
+                demonstrate it's viable today on capable hardware, which is the foundation ZynkCluster
+                would build on for mobile node participation:
+            </p>
+            <ul style="padding-left: 24px; color: #ccd4ec; font-size: 1rem; line-height: 2.2; margin-bottom: 20px;">
+                <li><a href="https://github.com/ggml-org/llama.cpp" style="color: #8be9fd;">llama.cpp</a> — the foundational inference library; runs on Android (including via Termux) and iOS, with a dedicated Qualcomm QNN backend for Snapdragon NPUs</li>
+                <li><a href="https://github.com/mlc-ai/mlc-llm" style="color: #8be9fd;">MLC LLM</a> — machine learning compilation framework built explicitly for mobile; full Android and iOS support with a unified API</li>
+                <li><a href="https://github.com/pytorch/executorch" style="color: #8be9fd;">ExecuTorch</a> (Meta/PyTorch) — on-device AI framework already deployed in Instagram, WhatsApp, and Meta's Ray-Ban glasses; supports Qualcomm, Apple, ARM, and MediaTek backends</li>
+                <li><a href="https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference" style="color: #8be9fd;">MediaPipe LLM Inference</a> (Google) — on-device LLM API for Android and iOS, optimized for lightweight models like Gemma</li>
+                <li><a href="https://aihub.qualcomm.com/" style="color: #8be9fd;">Qualcomm AI Hub</a> — Qualcomm's platform for optimizing and deploying AI models on Snapdragon hardware</li>
+            </ul>
+            <p style="font-size: 0.95rem; color: #6272a4; font-style: italic;">
+                Note: Ollama, LM Studio, and similar tools run on desktop only (Mac/Linux/Windows) — they do not run on mobile devices.
+            </p>
+            <p>
+                <strong>Gaming consoles (PlayStation, Xbox)</strong> — not viable. Sony and Microsoft
+                lock their hardware completely; you cannot install compute drivers or run arbitrary
+                workloads on them.
+            </p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <section id="open-source" class="content-section">
+        <h2>Why This Needs to Be Open Source</h2>
+        <p>
+            ZynkCluster is being developed by one person. There is no team, no funding, and no
+            corporate roadmap behind it. That's worth being honest about — and it's also worth
+            explaining why that's unlikely to change on its own.
+        </p>
+        <p>
+            The companies best positioned to build this — cloud providers, GPU manufacturers,
+            AI labs — have little incentive to do so. Distributed consumer inference removes the cloud
+            dependency that makes AI profitable. A tool that lets people run large models on
+            hardware they already own, privately, on their own network, is structurally
+            incompatible with a subscription or API billing model. The value flows entirely to
+            users, not to a platform. That's exactly the point, and exactly why no well-funded
+            team is racing to build it.
+        </p>
+        <p>
+            This is one of the things GitHub and open source exist for. If you have 2+ GPU-equipped
+            machines and want to test the architecture, fork the repo and try it. If you're a
+            developer interested in distributed inference, MoE routing, or network protocols and
+            want to contribute, the code and documentation are there. If the proof of concept
+            works, the implications are meaningful — not just for Zynkbot, but for anyone who
+            wants to run large models privately on consumer hardware.
+        </p>
+        <div style="margin-top: 28px; display: flex; gap: 15px; flex-wrap: wrap;">
+            <a href="https://github.com/MSkill1/zynkbot/tree/main/labs/moe_poc" class="cta-button">View on GitHub</a>
+            <a href="mailto:matt@containai.ai" class="cta-button secondary">Get in Touch</a>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <section id="how-it-works" class="content-section">
+        <h2>How It Works</h2>
+        <p>
+            ZynkCluster is built around <strong>Mixture of Experts (MoE)</strong> models —
+            architectures where each query activates only a small subset of the model's expert
+            sub-networks. The number of active experts per token (k) is fixed by each model's
+            training: Mixtral 8x7B and 8x22B use k=2, DBRX uses k=4, OLMoE uses k=8, and
+            DeepSeek-V2 uses k=6. ZynkCluster's optimal cluster size matches the model's k —
+            with a k=4 model, four devices run in parallel; with k=8, up to eight.
+        </p>
+        <p>
+            When a query needs Expert 2 and Expert 6, ZynkCluster routes them to two different
+            devices and runs them at the same time. Both devices finish, the results are combined,
+            and inference continues. The latency is determined by the slowest device — not the
+            sum of all of them.
+        </p>
+
+        <div class="diagram-block">
+            <pre>Petals (Sequential layers — all devices process every token):
+Device A → Device B → Device C → ...
+Total latency: sum of all device times + all network hops
+
+ZynkCluster (Parallel experts — only active devices used):
+Router selects Expert 2 + Expert 6
+Device A (Expert 2) ◄── Parallel ──► Device B (Expert 6)
+Total latency: max(Device A, Device B) + 1 network hop</pre>
+        </div>
+
+        <p>
+            This is fundamentally different from existing distributed inference tools, which send
+            every token through every device in sequence. ZynkCluster only involves the devices
+            that are needed, and uses them simultaneously rather than one after another.
+        </p>
+
+        <div class="pull-quote">
+            <p>
+                The device-pairing infrastructure built for ZynkSync — memory synchronization across
+                your devices — becomes the coordination layer for compute clustering. The same
+                discovery, authentication, and networking. Different payload.
+            </p>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <div id="routing" class="section-dark">
+        <div class="content-inner">
+            <h2>Expert Routing</h2>
+            <p>
+                The phrase "when a query needs Expert 2 and Expert 6" can sound like experts are
+                predefined specialists with named jobs. They're not. Here's what's actually happening.
+            </p>
+
+            <h3>What the experts are</h3>
+            <p>
+                In an MoE model, each transformer layer contains several expert sub-networks —
+                typically standard feed-forward networks with identical architecture but
+                <strong>entirely independent weights</strong>. In Mixtral 8x7B, there are 8 experts
+                per layer. No one assigned "Expert 2 handles grammar" or "Expert 6 handles code."
+                The model developed its own internal division of labor through training, the same
+                way any neural network learns. What each expert actually specializes in is largely
+                opaque — researchers have found loose patterns, but nothing clean or interpretable.
+                Think of them as 8 slightly different brains that the model learned to consult selectively.
+            </p>
+
+            <h3>How the router chooses</h3>
+            <p>
+                Alongside the experts, each layer has a small <strong>router network</strong> (also
+                called a gate). It takes the current hidden state — a vector representing the token
+                being processed — and outputs a probability score for every expert. The top-k scores
+                win. Those experts run; the rest don't.
+            </p>
+
+            <div class="diagram-block">
+                <pre>Token hidden state → Router → score each expert:
+
+  Expert:  [ 0     1     2     3     4     5     6     7  ]
+  Score:   [ 0.05  0.31  0.42  0.08  0.03  0.07  0.38  0.12 ]
+
+  Top-2 (k=2): Expert 2 (0.42) and Expert 6 (0.38)
+  Experts 0, 1, 3, 4, 5, 7 → not activated for this token</pre>
+            </div>
+
+            <p>
+                "Expert 2 and Expert 6" is not a fixed choice. It changes with every single token,
+                based on what the router scores for that specific hidden state. Different tokens in
+                the same sentence often route to completely different expert pairs. The router itself
+                is lightweight — roughly 100MB — and runs on the coordinator device.
+            </p>
+
+            <h3>How experts map to devices</h3>
+            <p>
+                Experts are logical units inside the model. Devices are physical hardware. ZynkCluster
+                loads expert weights onto devices at startup and keeps them there. When the router
+                fires, the coordinator dispatches to wherever the winning experts happen to live:
+            </p>
+
+            <div class="diagram-block">
+                <pre>Startup (one-time weight loading):
+  Device A  ←  Experts 0, 1, 2, 3  (weights loaded into VRAM)
+  Device B  ←  Experts 4, 5, 6, 7  (weights loaded into VRAM)
+
+Per-token dispatch (every token, dynamically):
+  Router selects Expert 2 and Expert 6 for this token
+    → Expert 2 is on Device A  →  send hidden state to Device A
+    → Expert 6 is on Device B  →  send hidden state to Device B
+    → Both run simultaneously
+    → Results return, coordinator combines them (weighted sum)
+    → Next token
+
+If router had selected Expert 2 and Expert 3 (both on Device A):
+    → No parallelism benefit for that token — both run on Device A</pre>
+            </div>
+
+            <p>
+                The efficiency gain depends on the selected experts landing on different devices.
+                Statistically, with well-distributed weights and random routing, this happens most
+                of the time — but it's not guaranteed for every token. Tokens that route both
+                experts to the same device pay no network overhead for that step.
+            </p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <div id="comparison" class="section-dark">
+        <div class="content-inner">
+            <h2>Why This Approach Is Different</h2>
+
+            <p>
+                The two tools I'm most aware of that attempt distributed LLM inference are Petals
+                and DeepSpeed-MoE. There may be others. Neither of these targets consumer hardware
+                the way ZynkCluster does, and the comparison below is theoretical — ZynkCluster
+                has not been benchmarked against either.
+            </p>
+
+            <div style="overflow-x: auto;">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Petals (Sequential)</th>
+                        <th>DeepSpeed-MoE</th>
+                        <th>ZynkCluster</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Distribution method</td>
+                        <td>Layer by layer, sequential</td>
+                        <td>Expert parallel</td>
+                        <td>Expert parallel</td>
+                    </tr>
+                    <tr>
+                        <td>Target hardware</td>
+                        <td>Consumer (any)</td>
+                        <td>Datacenter (InfiniBand)</td>
+                        <td>Consumer (WiFi/Gigabit)</td>
+                    </tr>
+                    <tr>
+                        <td>Active devices per token</td>
+                        <td>All devices</td>
+                        <td>Selected experts only</td>
+                        <td>Selected experts only</td>
+                    </tr>
+                    <tr>
+                        <td>Latency model</td>
+                        <td>Sum of all hops</td>
+                        <td>Max of parallel ops</td>
+                        <td>Max of parallel ops</td>
+                    </tr>
+                    <tr>
+                        <td>Privacy</td>
+                        <td>Shared with cluster peers</td>
+                        <td>Datacenter controlled</td>
+                        <td>Local network only</td>
+                    </tr>
+                    <tr>
+                        <td>Device pairing</td>
+                        <td>Manual/public</td>
+                        <td>Datacenter provisioning</td>
+                        <td>ZynkSync (existing)</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <p>
+                DeepSpeed-MoE achieves expert-level parallelism but requires high-speed datacenter
+                interconnects (InfiniBand) — not viable on consumer hardware. Petals works on consumer
+                hardware but uses sequential layer routing, meaning every device in the cluster
+                must process every token. ZynkCluster combines consumer hardware accessibility
+                with expert-level parallelism.
+            </p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <section id="performance" class="content-section">
+        <h2>Performance Projections <span style="font-size: 0.55em; color: #6272a4; font-weight: 400; font-style: italic;">Theoretical Estimates</span></h2>
+        <p>
+            The numbers below are theoretical estimates extrapolated from single-device benchmarks
+            and known network overhead for hidden state tensor transfers. <strong>These have not been
+            measured on a live cluster.</strong> They represent what the architecture should achieve
+            if WiFi bandwidth and latency are within acceptable ranges — which is itself an open
+            question. See the Developer Notes section below.
+        </p>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <h4>Single Device (RTX 3090, 24GB)</h4>
+                <p>Model: Mixtral 8x7B (47B params, 13B active)</p>
+                <p>Tokens/sec: <span class="highlight">~40</span></p>
+                <p>First token latency: <span class="highlight">~50ms</span></p>
+                <p>Max model size: limited by single GPU VRAM</p>
+            </div>
+            <div class="stat-card">
+                <h4>2-Device Cluster (Gigabit Ethernet) — estimated</h4>
+                <p>Model: Mixtral 8x22B (141B params, 39B active) — <span class="highlight">3× larger</span></p>
+                <p>Tokens/sec: <span class="highlight">~30–35</span> (estimated 75–87% of single device)</p>
+                <p>First token latency: <span class="highlight">~75ms</span> (estimated +25ms network)</p>
+                <p>Graceful degradation if one device drops</p>
+            </div>
+        </div>
+
+        <p>
+            The projected result: two consumer GPUs should be able to run a significantly larger
+            model than either could handle alone — the exact multiplier depends on the model's
+            ratio of shared-to-expert parameters and how shared layers are handled across devices.
+            Measuring the real-world capacity gain and latency cost on consumer hardware is one of
+            the primary goals of this research.
+        </p>
+    </section>
+
+    <hr class="section-divider">
+
+    <div id="roadmap" class="section-dark">
+        <div class="content-inner">
+            <h2>Status &amp; Roadmap</h2>
+            <p>
+                ZynkCluster is theoretically sound and grounded in published research on Mixture of
+                Experts architectures. The architecture has been reviewed and validated in principle.
+                Development is ongoing; full implementation will proceed as other priorities —
+                including Android support — are completed.
+            </p>
+
+            <ul class="roadmap-list">
+                <li>
+                    <span class="phase">Phase 1</span>
+                    <span>Proof of concept — 2-device GPU cluster, basic expert routing, latency measurement. <strong>In progress.</strong></span>
+                </li>
+                <li>
+                    <span class="phase">Phase 2</span>
+                    <span>Full Mixtral 8x7B distribution, ZynkSync integration, fault tolerance and recovery.</span>
+                </li>
+                <li>
+                    <span class="phase">Phase 3</span>
+                    <span>Port to Rust. Evaluate Candle vs. llama.cpp for MoE expert extraction. Integrate with Tauri backend.</span>
+                </li>
+                <li>
+                    <span class="phase">Phase 4</span>
+                    <span>Production feature — dynamic load balancing, cluster management UI, and mobile device participation: Android phones (Qualcomm Snapdragon) and Apple Silicon Macs as cluster nodes.</span>
+                </li>
+            </ul>
+
+            <h3>Architecture &amp; Code</h3>
+            <p>
+                Illustrative architecture code, a visual flow diagram, and full documentation
+                are available in the repository under <code style="color: #8be9fd;">labs/moe_poc/</code>.
+                If you're a developer interested in distributed inference and want to contribute,
+                that's the place to start.
+            </p>
+            <div style="margin-top: 24px;">
+                <a href="https://github.com/MSkill1/zynkbot/tree/main/labs/moe_poc" class="cta-button">View on GitHub</a>
+                <a href="mailto:matt@containai.ai" class="cta-button secondary" style="margin-left: 15px;">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <div id="questions" class="section-dark">
+        <div class="content-inner">
+            <h2>Developer Notes: Open Questions</h2>
+            <p>
+                ZynkCluster's theoretical foundation is solid — the MoE parallelism is real and
+                inherent to how these models work, and the architecture follows logically from it.
+                What hasn't been validated yet is how that theory holds up on consumer networking
+                hardware. These are the open questions any contributor or tester should be aware of:
+            </p>
+
+            <h3>Bandwidth &amp; Tensor Size</h3>
+            <p>
+                Passing hidden states between devices across a network layer requires serializing
+                tensors and transmitting them over WiFi or Ethernet. The size of those tensors —
+                and whether consumer bandwidth can handle them at inference speed — has not been
+                measured. Gigabit Ethernet is likely fine; WiFi may introduce meaningful overhead
+                depending on contention, distance, and interference.
+            </p>
+
+            <h3>Latency Estimates</h3>
+            <p>
+                The +25ms network overhead figure in the performance projections is an estimate
+                based on typical LAN round-trip times plus rough tensor serialization overhead.
+                It has not been measured on a live cluster. Real-world latency may be higher,
+                particularly over WiFi or on congested networks.
+            </p>
+
+            <h3>Serialization Overhead</h3>
+            <p>
+                Encoding and decoding tensors for network transfer adds CPU overhead that isn't
+                present in single-device inference. The impact of this on throughput is unknown
+                until tested.
+            </p>
+
+            <h3>Model-Specific k Values</h3>
+            <p>
+                The number of experts activated per token (k) is fixed by each model's training
+                and cannot be changed without retraining. ZynkCluster's cluster size must match
+                the chosen model's k. Testing should begin with a well-documented model like
+                Mixtral 8x7B (k=2) before moving to higher-k models.
+            </p>
+
+            <h3>What Success Looks Like</h3>
+            <p>
+                A successful proof of concept would demonstrate: expert routing over a local
+                network, parallel execution on two or more GPU-equipped devices, result
+                aggregation, and measured latency within acceptable range of the theoretical
+                projections. Hardware requirements: 2+ devices with NVIDIA CUDA or AMD ROCm
+                support, Gigabit network preferred.
+            </p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <section id="research" class="content-section">
+        <h2>Research Foundation</h2>
+        <p>
+            ZynkCluster applies established MoE research to a deployment context that prior work
+            hasn't targeted: consumer devices on local networks. The parallelism concept and
+            MoE architecture are not new — the contribution is the deployment model.
+        </p>
+        <h3>Key Papers</h3>
+        <ul style="padding-left: 24px; color: #ccd4ec; font-size: 1rem; line-height: 2;">
+            <li><a href="https://arxiv.org/abs/2401.04088" target="_blank" style="color: #8be9fd;">Mixtral of Experts</a> — Jiang et al., 2024</li>
+            <li><a href="https://arxiv.org/abs/2101.03961" target="_blank" style="color: #8be9fd;">Switch Transformers</a> — Fedus et al., 2021</li>
+            <li><a href="https://arxiv.org/abs/1701.06538" target="_blank" style="color: #8be9fd;">Outrageously Large Neural Networks</a> (original MoE paper) — Shazeer et al., 2017</li>
+        </ul>
+        <h3>MoE Models Compatible with ZynkCluster</h3>
+        <p>ZynkCluster is not Mixtral-specific. Any open MoE model can be used; cluster size should match the model's k value.</p>
+        <ul style="padding-left: 24px; color: #ccd4ec; font-size: 1rem; line-height: 2;">
+            <li><strong style="color: #f8f8f2;">Mixtral 8x7B / 8x22B</strong> — k=2, 8 experts. Good starting point for testing.</li>
+            <li><strong style="color: #f8f8f2;">DBRX</strong> (Databricks) — k=4, 16 experts. Benefits from 4-device cluster.</li>
+            <li><strong style="color: #f8f8f2;">OLMoE</strong> (Allen Institute) — k=8, 64 experts. Up to 8 parallel devices.</li>
+            <li><strong style="color: #f8f8f2;">DeepSeek-V2 / V3</strong> — k=6 from 160 experts / k=8 from 256 experts.</li>
+            <li><strong style="color: #f8f8f2;">Grok-1</strong> (xAI) — k=2, 8 experts. Same topology as Mixtral.</li>
+        </ul>
+        <h3>Prior Implementations</h3>
+        <ul style="padding-left: 24px; color: #ccd4ec; font-size: 1rem; line-height: 2;">
+            <li>Petals — distributed LLM inference over consumer networks (sequential)</li>
+            <li>DeepSpeed-MoE — Microsoft's MoE framework (datacenter)</li>
+            <li>vLLM — production MoE serving (single-node)</li>
+        </ul>
+    </section>
+
+    <div class="container">
+        <footer>
+            <p><strong>ZynkCluster</strong> by <a href="../">ContainAI</a></p>
+            <p style="margin-top: 10px;">
+                <a href="../">ContainAI</a> |
+                <a href="../zynkbot/">Zynkbot</a> |
+                <a href="../sdk/">SDK</a> |
+                <a href="../foundation/">Foundation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="mailto:matt@containai.ai">Contact</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024–2026 Matthew Skillman / ContainAI<br>
+                AGPL v3 (non-commercial) + Commercial license available
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

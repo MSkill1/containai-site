@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zynkbot - Privacy-first AI assistant with persistent memory and cross-device sync. Local processing, no surveillance, complete user control.">
+    <meta name="keywords" content="Zynkbot, privacy AI, local AI assistant, semantic memory, cross-device sync, ContainAI">
+    <meta name="author" content="Matthew Skillman">
+    <title>Zynkbot - Privacy-First AI Companion | ContainAI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        header { padding: 40px 20px; border-bottom: 1px solid #44475a; }
+
+        .breadcrumb { font-size: 0.9rem; color: #6272a4; margin-bottom: 20px; }
+        .breadcrumb a { color: #8be9fd; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #f8f8f2;
+            margin-bottom: 10px;
+        }
+
+        .tagline { font-size: 1.3rem; color: #ccd4ec; margin-bottom: 30px; }
+
+        /* Hero */
+        .hero { padding: 40px 20px; text-align: center; }
+
+        .hero-text { max-width: 800px; margin: 0 auto 40px; }
+
+        .hero-text h2 { font-size: 2rem; color: #f8f8f2; margin-bottom: 20px; }
+
+        .hero-text p { font-size: 1.2rem; color: #ccd4ec; margin-bottom: 15px; }
+
+        .platform-badges {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .badge { padding: 8px 16px; background: #44475a; border-radius: 6px; font-size: 0.9rem; font-weight: 600; }
+        .badge.supported { color: #50fa7b; }
+        .badge.planned { color: #6272a4; }
+
+        .cta-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #8be9fd;
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #50fa7b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 233, 253, 0.3);
+        }
+
+        .cta-button.secondary { background: #44475a; color: #8be9fd; }
+        .cta-button.secondary:hover { background: #6272a4; }
+
+        /* Long-form content sections */
+        .content-section {
+            padding: 60px 20px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: #8be9fd;
+            margin-bottom: 30px;
+        }
+
+        .content-section h3 {
+            font-size: 1.4rem;
+            color: #50fa7b;
+            margin-top: 36px;
+            margin-bottom: 16px;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            color: #ccd4ec;
+            margin-bottom: 22px;
+            line-height: 1.85;
+        }
+
+        .content-section ul {
+            padding-left: 24px;
+            margin-bottom: 22px;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            color: #ccd4ec;
+            margin-bottom: 10px;
+            line-height: 1.75;
+        }
+
+        .content-section strong { color: #f8f8f2; }
+
+        /* Section divider */
+        .section-divider {
+            border: none;
+            border-top: 1px solid #44475a;
+            margin: 0;
+        }
+
+        /* Dark background sections */
+        .section-dark {
+            background: #1a1d28;
+            padding: 60px 20px;
+            margin: 0;
+        }
+
+        .section-dark .content-inner {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .section-dark h2 {
+            font-size: 2rem;
+            color: #8be9fd;
+            margin-bottom: 30px;
+        }
+
+        .section-dark h3 {
+            font-size: 1.4rem;
+            color: #50fa7b;
+            margin-top: 36px;
+            margin-bottom: 16px;
+        }
+
+        .section-dark p {
+            font-size: 1.1rem;
+            color: #ccd4ec;
+            margin-bottom: 22px;
+            line-height: 1.85;
+        }
+
+        .section-dark ul {
+            padding-left: 24px;
+            margin-bottom: 22px;
+        }
+
+        .section-dark li {
+            font-size: 1.05rem;
+            color: #ccd4ec;
+            margin-bottom: 10px;
+            line-height: 1.75;
+        }
+
+        .section-dark strong { color: #f8f8f2; }
+
+        /* Pull quote / blockquote */
+        .pull-quote {
+            background: #1a1d28;
+            border-left: 4px solid #8be9fd;
+            padding: 24px 28px;
+            border-radius: 0 8px 8px 0;
+            margin: 36px 0;
+        }
+
+        .pull-quote p {
+            font-size: 1.1rem;
+            color: #f8f8f2;
+            font-style: italic;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        /* Memory diagram */
+        .memory-layers {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .memory-layer {
+            background: #44475a;
+            border-radius: 10px;
+            padding: 22px 26px;
+            border-left: 4px solid #8be9fd;
+        }
+
+        .memory-layer:nth-child(2) { border-left-color: #50fa7b; }
+        .memory-layer:nth-child(3) { border-left-color: #bd93f9; }
+
+        .memory-layer h4 {
+            color: #f8f8f2;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .memory-layer p {
+            color: #9aa5c4;
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        /* Safety table */
+        .safety-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 1rem;
+        }
+
+        .safety-table th {
+            background: #44475a;
+            color: #8be9fd;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .safety-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #44475a;
+            color: #ccd4ec;
+            vertical-align: top;
+        }
+
+        .safety-table tr:hover td { background: #2d2f40; }
+
+        .safety-table .mode-name { color: #f8f8f2; font-weight: 600; }
+
+        /* Comparison */
+        .comparison {
+            background: #282a36;
+            padding: 60px 20px;
+            border-radius: 12px;
+            margin: 60px 0;
+        }
+
+        .comparison h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #8be9fd;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .comparison-column h3 { margin-bottom: 20px; font-size: 1.3rem; }
+        .comparison-column.others h3 { color: #ff5555; }
+        .comparison-column.zynkbot h3 { color: #50fa7b; }
+        .comparison-column ul { list-style: none; }
+
+        .comparison-column li {
+            padding: 10px 0;
+            border-bottom: 1px solid #44475a;
+            color: #ccd4ec;
+        }
+
+        .comparison-column li:before { content: "❌ "; margin-right: 10px; }
+        .comparison-column.zynkbot li:before { content: "✅ "; }
+
+        /* Demo callout */
+        .demo-callout {
+            background: #282a36;
+            padding: 40px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .demo-callout h3 {
+            font-size: 1.5rem;
+            color: #8be9fd;
+            margin-bottom: 16px;
+        }
+
+        .demo-callout p {
+            font-size: 1.05rem;
+            color: #ccd4ec;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .demo-card {
+            background: #44475a;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .demo-card.blue { border-left: 4px solid #8be9fd; }
+        .demo-card.green { border-left: 4px solid #50fa7b; }
+
+        .demo-card strong { color: #8be9fd; }
+        .demo-card.green strong { color: #50fa7b; }
+
+        .demo-card ul {
+            margin-top: 10px;
+            color: #ccd4ec;
+            padding-left: 20px;
+        }
+
+        .demo-card li { margin-bottom: 8px; font-size: 0.95rem; }
+
+        /* Install */
+        .install-section {
+            background: #282a36;
+            padding: 60px 20px;
+            border-radius: 12px;
+            margin: 60px 0;
+        }
+
+        .install-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #8be9fd;
+        }
+
+        .code-block {
+            background: #1a1d28;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #8be9fd;
+            overflow-x: auto;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .code-block pre {
+            color: #50fa7b;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 60px;
+        }
+
+        footer a { color: #8be9fd; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Section nav */
+        .section-nav {
+            background: #1a1d28;
+            border-top: 1px solid #44475a;
+            border-bottom: 1px solid #44475a;
+            padding: 14px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .section-nav a {
+            color: #8be9fd;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0 12px;
+            opacity: 0.75;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .section-nav a:hover { opacity: 1; }
+
+        .section-nav .sep { color: #44475a; }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 9999;
+            cursor: zoom-out;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+        }
+
+        .lightbox-overlay img {
+            max-width: 95vw;
+            max-height: 92vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            cursor: zoom-out;
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 28px;
+            color: #f8f8f2;
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .lightbox-close:hover { opacity: 1; }
+
+        /* Screenshots */
+        .screenshot-wrap {
+            margin: 32px 0;
+            text-align: center;
+            background: #2d2f40;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .screenshot {
+            max-width: 100%;
+            border-radius: 10px;
+            border: 1px solid #44475a;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            cursor: zoom-in;
+            transition: box-shadow 0.2s;
+        }
+
+        .screenshot:hover {
+            box-shadow: 0 8px 40px rgba(139, 233, 253, 0.2);
+        }
+
+        .screenshot-caption {
+            margin-top: 10px;
+            font-size: 0.88rem;
+            color: #9aa5c4;
+            font-style: italic;
+        }
+
+        .screenshot-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 32px 0;
+            align-items: start;
+        }
+
+        .screenshot-pair .screenshot-wrap { margin: 0; }
+
+        .screenshot-trio {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 32px 0;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2rem; }
+            .hero-text h2 { font-size: 1.5rem; }
+            .hero-text p { font-size: 1rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .content-section { padding: 40px 16px; }
+            .safety-table { font-size: 0.9rem; }
+            .safety-table th, .safety-table td { padding: 10px 12px; }
+            .screenshot-pair { grid-template-columns: 1fr; }
+            .screenshot-trio { grid-template-columns: 1fr; }
+            .demo-callout { padding: 20px 16px; }
+            .demo-grid { grid-template-columns: 1fr; }
+            .screenshot { max-width: 100% !important; }
+        }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div style="background: #50fa7b; color: #282a36; text-align: center; padding: 10px 20px; font-weight: 600; font-size: 0.95rem;">
+        v0.9.0 now available —
+        <a href="https://github.com/MSkill1/zynkbot/releases/latest" style="color: #282a36; text-decoration: underline;">download the pre-built binary</a>
+        for Windows or Linux. No compilation required.
+    </div>
+    <div class="container">
+        <header>
+            <div class="breadcrumb">
+                <a href="../">ContainAI</a> / Zynkbot
+            </div>
+            <div class="logo">Zynkbot</div>
+            <div class="tagline">Privacy-first AI companion with persistent memory and cross-device sync</div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-text">
+                <h2>AI That Serves You</h2>
+                <p>
+                    Zynkbot is a local-first, model-agnostic AI system that gives you complete control over your data.
+                    Persistent semantic memory. Cross-device sync. Works offline. 
+                </p>
+                <p style="color: #8be9fd; font-weight: 600;">
+                    No surveillance.  No user profiles.  Your data stays on your device.
+                </p>
+            </div>
+
+            <div class="screenshot-wrap" style="max-width: 860px; margin: 0 auto 32px;">
+                <img src="images/main.png" alt="Zynkbot main interface" class="screenshot">
+                <div class="screenshot-caption">The Zynkbot interface — conversation, memory panel, and knowledge base access in one window</div>
+            </div>
+
+            <div class="platform-badges">
+                <span class="badge supported">✅ Windows 10/11</span>
+                <span class="badge supported">✅ Linux (Ubuntu, Arch, Fedora)</span>
+                <span class="badge planned">📱 Android (Planned 2026)</span>
+                <span class="badge planned">📱 iOS (Planned 2026)</span>
+            </div>
+
+            <div class="cta-section">
+                <a href="https://github.com/MSkill1/zynkbot/releases/latest" class="cta-button">Download on GitHub</a>
+                <a href="docs/" class="cta-button secondary">View Documentation</a>
+            </div>
+        </section>
+
+        <nav class="section-nav">
+            <a href="#gap">Why Zynkbot</a><span class="sep"> · </span>
+            <a href="#memory">How Memory Works</a><span class="sep"> · </span>
+            <a href="#privacy">Privacy</a><span class="sep"> · </span>
+            <a href="#models">Model Independence</a><span class="sep"> · </span>
+            <a href="#safety">Safety</a><span class="sep"> · </span>
+            <a href="#networking">Networking</a><span class="sep"> · </span>
+            <a href="#snapins">Snap-ins</a><span class="sep"> · </span>
+            <a href="#zynkcluster">ZynkCluster</a><span class="sep"> · </span>
+            <a href="#install">Quick Start</a>
+        </nav>
+
+        <hr class="section-divider">
+
+        <!-- THE GAP -->
+        <section id="gap" class="content-section">
+            <h2>The Gap Corporate AI Can't Fill</h2>
+
+            <p>
+                Today's leading AI assistants are genuinely impressive, and all of them now offer
+                some form of personal memory — a profile built from your conversations over time.
+                But there's a fundamental difference between memory that lives on a corporation's
+                servers, feeds into their models, and exists to improve their product, and memory that
+                <strong>lives on your hardware, serves only you, and is never seen by anyone else.</strong>
+                Corporate AI memory makes the corporation's AI better at serving everyone - not the individual. ChatGPT runs on a surveillance business model — your conversations are collected, analyzed, and used
+                to improve a product that serves millions of other people. That's a requirement of their business - advertising is the only way that business model can turn a profit. As long as that model stands, privacy isn't something they can offer, because real privacy would put them out of business.
+            </p>
+
+            <p>
+                People discuss deeply personal things
+                with AI assistants: health anxieties, grief, relationship struggles, financial stress,
+                concerns they might not share with another person. That's not surprising —
+                AI is available at 3am, non-judgmental, and often genuinely useful in difficult
+                moments. But it's worth asking where that vulnerability goes. When it's stored
+                as part of a profile on a corporate server, it becomes data. When it lives on
+                your own device, under your control, it stays private.
+            </p>
+
+            <p>
+                What exactly happens to your data — your conversations — on a corporate server isn't always clear — and that opacity is by design.
+                OpenAI, for instance, has entered a formal partnership with Palantir, a company whose
+                core business is building surveillance and data analytics infrastructure for government
+                and military clients. The details of what flows where under that arrangement aren't
+                publicly disclosed. We don't know what these companies ultimately do with the
+                conversations their users have in vulnerable moments, and trusting that it stays
+                private isn't logical — it's wishful thinking.
+                Zynkbot's memory makes it better at serving you specifically — and that knowledge
+                goes nowhere.
+            </p>
+
+            <p>
+                That your most intimate thoughts should be available only to you is not a
+                technical preference — <strong>it's an ethical position.</strong>
+                It used to be an assumption so basic it didn't need to be stated. If a store
+                clerk followed you around, writing down everything you said and noting every item you paused to look at —
+                the way Amazon tracks exactly how long you hover over each product — then sold that information to
+                companies wanting to steer your future decisions, you'd consider it a serious violation. We accept a near-identical arrangement from AI assistants and online businesses 
+                because it's framed as "improving the product." Over the past few decades,
+                through the gradual normalization of data collection, behavioral profiling,
+                and always-on connectivity, that assumption of privacy has been quietly
+                dismantled — largely without opposition, and often without people noticing
+                until it was already gone. Zynkbot doesn't solve that problem entirely, but it takes
+                a clear stance on it, and gives you one practical place to draw a line.
+            </p>
+
+            <p>
+                Zynkbot isn't trying to replace powerful online AI models and tools, nor compete with them.
+                It fills a different demand — one for the privacy they can't offer:
+                <strong>a trustworthy companion that actually learns who you are over time, not to manipulate you, but to help you.</strong>
+                That knowledge is stored privately on your own hardware and carried into every
+                conversation — regardless of which underlying AI model you're using that day.
+                The model is the face. The memory is the relationship.
+            </p>
+
+            <div class="pull-quote">
+                <p>
+                    Think of Zynkbot less like a chatbot and more like the computer on the starship Enterprise —
+                    always available, deeply knowledgeable about you personally, and completely trustworthy. Your Zynkbot is not trying to be your friend. It's not a substitute for human connection. But using it over time will allow it to genuinely get to know you in a way that makes every interaction more useful than the last.
+                </p>
+            </div>
+
+            <p>
+                Zynkbot didn't start as a response to government and corporate surveillance, although this has increased alarmingly in recent years on both fronts. It started with a
+                more specific problem: building a private AI companion with a parenting mode — a
+                way for children to have a phone where internet access is filtered through an AI,
+                with parents staying in control until a child is ready to navigate it alone. But
+                the same architecture that makes that possible — local memory, no cloud dependency,
+                genuine user control — turns out to be exactly what everyone needs right now.
+                The result is a trustworthy companion, but it also turns out to be a defensive anti-surveillance tool: a way to protect
+                yourself in an environment that was quietly built to work against you.
+            </p>
+
+            <p>
+                The privacy focus isn't ideology — it's a practical response to a real shift.
+                Over the past thirty years, the rise of social media and the quiet expansion of
+                corporate and government data collection have fundamentally changed what it means
+                to have privacy. Most people sense this even if they can't articulate it.
+                <strong>If your most personal context — your goals, your health, your doubts, your
+                half-formed ideas — is going to live somewhere digitally, it should live with you.
+                Not harvested. Not used to train a commercial model.
+                Not held on a server you don't control.</strong> Zynkbot is one practical response
+                to that reality — a small piece of infrastructure that puts something back on
+                your side of the equation.
+            </p>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- HOW MEMORY WORKS -->
+        <div id="memory" class="section-dark">
+            <div class="content-inner">
+                <h2>🧠 How Memory Works</h2>
+
+                <p>
+                    Every time you send a message, Zynkbot assembles a context window from three sources
+                    before anything reaches a model. Understanding what goes into that prompt explains
+                    why conversations feel continuous and personal.
+                </p>
+
+                <div class="memory-layers">
+                    <div class="memory-layer">
+                        <h4>Your Accumulated Personal Memories</h4>
+                        <p>
+                            Facts and context built from your conversations over time — your preferences,
+                            your history, the things you've mentioned in passing. Zynkbot retrieves the
+                            most relevant ones for each query and includes them in the prompt automatically.
+                            You can edit, delete, or add memories at any time.
+                        </p>
+                    </div>
+                    <div class="memory-layer">
+                        <h4>Your Current Conversation</h4>
+                        <p>
+                            The conversation you're having right now. Zynkbot maintains full context
+                            within a session so responses stay coherent as the discussion develops.
+                        </p>
+                    </div>
+                    <div class="memory-layer">
+                        <h4>Your Knowledge Base (optional)</h4>
+                        <p>
+                            Documents you've uploaded (PDFs, text files, code, notes) that Zynkbot can
+                            query with retrieval-augmented generation. When relevant content is found,
+                            it's included in the prompt alongside your memories. Your files are processed
+                            locally and never leave your device unless you choose.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="screenshot-wrap">
+                    <img src="images/Kbase.png" alt="Knowledge Base Document Manager" class="screenshot" style="max-width: 640px;">
+                    <div class="screenshot-caption">Knowledge Base Document Manager — index documents into namespaced folders for RAG search</div>
+                </div>
+
+                <h3>Hybrid Search: Entity + Semantic</h3>
+                <p>
+                    When you ask a question, Zynkbot doesn't just do a keyword search or a
+                    vector similarity search. It uses a two-stage hybrid approach: first, it extracts
+                    named entities from your query (people, places, dates, concepts) using a local
+                    BERT AI model; then it combines those entity matches with semantic similarity search
+                    across all three memory layers. The result is retrieval that understands both
+                    <em>what you're talking about</em> and <em>what you mean</em>.
+                </p>
+
+                <h3>Transparent Recall</h3>
+                <p>
+                    After every response, Zynkbot shows you exactly which memories it drew on to
+                    answer your question. You can open the Memory Manager, see the full list, and
+                    decide whether those memories are accurate, outdated, or should be removed.
+                    If two memories contradict each other, Zynkbot surfaces the conflict and asks
+                    you to resolve it rather than silently picking one.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="images/nobel_convo.png" alt="Zynkbot conversation showing recalled memories" class="screenshot" style="max-width: 780px;">
+                    <div class="screenshot-caption">Every response shows how many memories were recalled — click to see exactly which ones shaped the answer</div>
+                </div>
+
+                <p>
+                    When you tell Zynkbot something that contradicts what it already knows, it
+                    doesn't silently pick one version or quietly update the record. It surfaces
+                    the conflict directly and lets you decide how to resolve it — keep the old
+                    memory, keep the new one, store both with an explanation, or mark them as
+                    an unresolved contradiction.
+                </p>
+
+                <div class="screenshot-pair">
+                    <div class="screenshot-wrap">
+                        <img src="images/married_convo.png" alt="Zynkbot detecting a contradiction" class="screenshot">
+                        <div class="screenshot-caption">Zynkbot politely pushes back when a statement contradicts stored memory</div>
+                    </div>
+                    <div class="screenshot-wrap">
+                        <img src="images/conradiction_modal.png" alt="Contradiction resolution modal" class="screenshot">
+                        <div class="screenshot-caption">The contradiction modal — you decide how to resolve it, with full context on both sides</div>
+                    </div>
+                </div>
+
+                <div class="screenshot-wrap">
+                    <img src="images/graph_contradicts.png" alt="Memory graph showing contradictions" class="screenshot">
+                    <div class="screenshot-caption">Contradictions are visible in the memory graph as red arrows — nothing is hidden</div>
+                </div>
+
+                <h3>Full Control</h3>
+                <p>
+                    Every memory is editable. Every memory is deletable. You can tag memories with
+                    namespace labels to organize and filter them — for example, separating work context
+                    from personal context. The entire memory database is a local SQLite file
+                    stored on your machine. You can back it up, export it, or wipe it entirely
+                    at any time.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="images/MemManager.png" alt="Memory Manager" class="screenshot">
+                    <div class="screenshot-caption">Memory Manager — search, browse, and edit every memory. Filter by namespace, view relationships, delete anything.</div>
+                </div>
+
+                <p>
+                    Memories aren't a flat list — they form a graph. Each memory can support,
+                    contradict, elaborate on, or be caused by others. The Memory Relationship Graph
+                    lets you visualize those connections, click into any node, and understand how
+                    Zynkbot's knowledge is structured.
+                </p>
+
+                <div class="screenshot-pair">
+                    <div class="screenshot-wrap">
+                        <img src="images/graph_global.png" alt="Memory graph — all memories" class="screenshot">
+                        <div class="screenshot-caption">All 59 Einstein memories as a graph — click any node to explore its connections</div>
+                    </div>
+                    <div class="screenshot-wrap">
+                        <img src="images/graph_supports.png" alt="Memory graph — supporting relationships" class="screenshot">
+                        <div class="screenshot-caption">A memory and its supporting relationships — causes, elaborations, and reminders</div>
+                    </div>
+                </div>
+
+                <div class="pull-quote">
+                    <p>
+                        Try it immediately after install: load the built-in Einstein demo set (59
+                        pre-built memories) and ask questions from his perspective. Watch Zynkbot
+                        surface exactly which memories shaped each answer — then edit one and ask
+                        the same question again. The answer changes.
+                    </p>
+                </div>
+
+                <div class="demo-callout">
+                    <h3>🧪 Einstein Demo</h3>
+                    <p>
+                        Included with every installation. Load 59 pre-built Einstein memories and explore
+                        how the memory system shapes responses in real time.
+                    </p>
+                    <div class="demo-grid">
+                        <div class="demo-card blue">
+                            <strong>Try asking:</strong>
+                            <ul>
+                                <li>"What is my theory about the photoelectric effect?"</li>
+                                <li>"Tell me about my relationship with Mileva"</li>
+                                <li>"What did I think about quantum mechanics?"</li>
+                            </ul>
+                        </div>
+                        <div class="demo-card green">
+                            <strong>Then:</strong>
+                            <ul>
+                                <li>Open Memory Manager and edit a memory</li>
+                                <li>Ask the same question — the answer changes</li>
+                                <li>View the memory graph to see relationships</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- PRIVACY IN PRACTICE -->
+        <section id="privacy" class="content-section">
+            <h2>🔒 Privacy in Practice</h2>
+
+            <p>
+                "Privacy-first" is easy to say. Here's specifically what it means in Zynkbot's design.
+            </p>
+
+            <h3>Local-First by Default</h3>
+            <p>
+                Zynkbot runs local AI models out of the box — standard .gguf format files compatible
+                with llama.cpp. When running locally, nothing leaves your device. No API call, no
+                network traffic, no external dependency. The inference happens on your CPU or GPU,
+                the memory database is a local SQLite file, and the application itself is a Tauri desktop
+                app with no telemetry or update pings.
+            </p>
+
+            <h3>Optional API Use — On Your Terms</h3>
+            <p>
+                If you want access to more capable models (GPT-4, Claude, Grok), you can connect
+                your own API keys. When you do, your conversation text goes to that provider
+                for inference — but <strong>your memory database never does.</strong> Zynkbot constructs
+                the context window locally, retrieves relevant memories locally, and sends only the
+                assembled prompt to the API. The underlying personal data stays home.
+            </p>
+
+            <p>
+                API providers are primarily business services. Their privacy policies are driven by
+                enterprise compliance requirements and typically mandate prompt deletion within 30 days.
+                By default, your conversations are not permanently retained and are not used to train
+                their models. Zynkbot is designed to take full advantage of this — treating the API
+                as a stateless inference service, not a memory store.
+            </p>
+
+            <h3>No Account. No Login.</h3>
+            <p>
+                Once Zynkbot is installed, it just opens. There's no account to create, no email
+                verification, no password reset flow, no session that expires and locks you out.
+                Your AI assistant is on your device — you don't need anyone's permission to use it.
+            </p>
+
+            <h3>No Telemetry. No Analytics. No Tracking.</h3>
+            <p>
+                There are no usage analytics, no error reporting services, no version check pings,
+                no "help us improve" data collection. The application does not phone home in any form.
+                You can verify this by inspecting the source code — it's all there under AGPL v3.
+            </p>
+
+            <h3>The License as a Privacy Guarantee</h3>
+            <p>
+                The AGPL v3 license isn't just an open source choice — it's a structural protection.
+                AGPL requires that anyone who modifies and distributes Zynkbot must also release their
+                modifications. This prevents a company from taking the codebase, adding surveillance
+                features, and distributing a closed-source fork without disclosing what they've done.
+                The license keeps the code auditable.
+            </p>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- MODEL INDEPENDENCE -->
+        <div id="models" class="section-dark">
+            <div class="content-inner">
+                <h2>🎭 Model-Independent Memory</h2>
+
+                <p>
+                    Most AI tools are vertically integrated: the memory lives in the same system as
+                    the model. If you want to switch models, you lose your history.
+                </p>
+
+                <p>
+                    Zynkbot separates the memory layer from the model layer entirely. Your accumulated
+                    context — everything Zynkbot knows about you — lives in a local database under
+                    your control, completely independent of which AI you're talking to. Switch between
+                    a local model, GPT-4, Claude, and Grok in the same conversation, and Zynkbot
+                    maintains continuity throughout. <strong>The model is the face. The memory is the
+                    relationship.</strong>
+                </p>
+
+                <p>
+                    In practice this means you can use the most capable model available for complex
+                    reasoning: Claude for an ethics question, a local model for private tasks, or a specialized model for
+                    specific domains — without any of those choices breaking the continuity of
+                    what Zynkbot knows about you. You're not locked into any provider, and your
+                    personal context doesn't live in any of their systems.
+                </p>
+
+                <p>
+                    The Ensemble Mode takes this further: query multiple models simultaneously on
+                    the same question, see their responses side by side, and let Zynkbot identify
+                    consensus and flag disagreements. Useful for high-stakes questions where you
+                    want more than one perspective, or for fact-checking responses against each other.
+                    Ensemble mode results can be introduced at any point in an ongoing conversation.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="images/ensemble_modal.png" alt="Multi-Model Ensemble modal" class="screenshot" style="max-width: 680px;">
+                    <div class="screenshot-caption">Ensemble mode — select any combination of API and local models to answer the same question simultaneously</div>
+                </div>
+
+                <h3>Web Search</h3>
+                <p>
+                    When a question requires current information beyond what's in your memory or
+                    knowledge base, Zynkbot can perform a web search and incorporate the results
+                    into its response. Like everything else, this is on your terms — triggered
+                    explicitly, not automatically.  You can approve the search query or alter it if you choose.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="images/web_search.png" alt="Zynkbot web search in action" class="screenshot" style="max-width: 780px;">
+                    <div class="screenshot-caption">Web search runs inline and the results are incorporated into the response</div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- SAFETY MODES -->
+        <section id="safety" class="content-section">
+            <h2>🛡️ Safety Containment Modes</h2>
+
+            <p>
+                Zynkbot includes a configurable safety layer — local TinyBERT classification runs by default
+                on your device before content reaches any model. Modes are global settings for Zynkbot, as opposed to snap-ins which are industry-specific tools. Choose the containment level that fits
+                your use case, or adjust/create modes for a specific use case.
+            </p>
+
+            <div style="overflow-x: auto;">
+            <table class="safety-table">
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Best For</th>
+                        <th>Behavior</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mode-name">Guardian</td>
+                        <td>Default — most users</td>
+                        <td>Balanced filtering. Blocks clearly unsafe content. Reasonable defaults for adult use.</td>
+                    </tr>
+                    <tr>
+                        <td class="mode-name">Child</td>
+                        <td>Family use</td>
+                        <td>Strict content filtering. Conservative topic boundaries. No mature themes. (API call required for child safety)</td>
+                    </tr>
+                    <tr>
+                        <td class="mode-name">Sovereign</td>
+                        <td>Informed adult use</td>
+                        <td>Warnings shown for sensitive content but not blocked. User makes final call.</td>
+                    </tr>
+                    <tr>
+                        <td class="mode-name">Witness</td>
+                        <td>Research / professional</td>
+                        <td>No content filtering. Safety layer disabled entirely. Primarily for research and testing.</td>
+                    </tr>
+                    <tr>
+                        <td class="mode-name">HIPAA</td>
+                        <td>Healthcare settings</td>
+                        <td>PHI detection and flagging. Designed for clinical workflows and compliance environments. (see documentation)</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <p>
+                The safety classifier runs entirely locally — no content is sent to an external
+                moderation service. All modes can be changed at any time through Settings.
+            </p>
+
+            <div class="screenshot-wrap">
+                <img src="images/settings.png" alt="System Controls — containment mode and model selection" class="screenshot" style="max-width: 480px;">
+                <div class="screenshot-caption">System Controls — switch containment (safety) modes and models from a single panel</div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- CROSS-DEVICE -->
+        <div id="networking" class="section-dark">
+            <div class="content-inner">
+                <h2>🔄 Cross-Device Networking</h2>
+
+                <p>
+                    Zynkbot includes three networking features that let your devices communicate
+                    without any cloud infrastructure.
+                </p>
+
+                <h3>ZynkSync — Memory Synchronization</h3>
+                <p>
+                    Sync your memory database between devices on your local network using mDNS
+                    device discovery. Your desktop and laptop (phone app coming soon) can stay in sync without any
+                    cloud intermediary. Maintain continuous conversation flow across devices on Wi-Fi networks.
+                </p>
+
+                <h3>ZynkLink — Local File Sharing</h3>
+                <p>
+                    Transfer files between devices on the same network — no external service involved.
+                    Useful for sharing documents to add to a device’s knowledge base, or for general
+                    local file transfer. Download a colleague’s shared files directly into your AI
+                    companion’s knowledge base, and it will be instantly familiar. Large file transfers
+                    are supported — you can exchange different AI models over linked devices.
+                </p>
+
+                <h3>ZChat — Device-to-Device Messaging</h3>
+                <p>
+                    Local messaging between devices on the same network. Operates entirely within
+                    your LAN — no servers, no accounts, no cloud relay.
+                </p>
+
+                <p>
+                    All three features require devices to be on the same WiFi or LAN network.
+                    None of them use external servers or require an internet connection.
+                    Note: LAN traffic between devices is currently unencrypted.
+                    End-to-end encryption for all three features is on the roadmap for v1.0.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="images/link_and_sync.png" alt="ZynkSync and ZynkLink panels" class="screenshot" style="max-width: 780px;">
+                    <div class="screenshot-caption">ZynkSync (memory sync) and ZynkLink (file sharing &amp; chat) — accessible from the settings panel</div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- SNAP-INS -->
+        <section id="snapins" class="content-section">
+            <h2>🧩 Snap-ins <span style="font-size: 0.55em; color: #6272a4; font-weight: 400; font-style: italic;">Experimental</span></h2>
+            <p>
+                Snap-ins are purpose-built mini-applications that run inside Zynkbot for specific
+                workflows. The therapist snap-in is a working demo of the concept — it indexes session
+                notes by patient using RAG, making them fully searchable within the knowledge base.
+                The current version is a proof of concept: indexing works, but querying through the
+                interface is not yet implemented. Snap-ins are experimental and intended as a developer
+                preview of what domain-specific tooling can look like on top of the Zynkbot platform.
+            </p>
+            <p>
+                In virtually every industry, workers could benefit from an AI with a snap-in focused
+                on their field. In our personal lives, snap-ins can draw on data accumulated over time
+                to track everything from mental and physical health to hobbies, games, and leisure activities.
+            </p>
+
+            <div class="screenshot-wrap">
+                <img src="images/therapist_notes.png" alt="Therapist snap-in for session notes" class="screenshot" style="max-width: 640px;">
+                <div class="screenshot-caption">Therapist snap-in — session notes organized by patient, indexed locally for RAG search. Fully private, stored on device. Have a conversation about a patient with your Zynkbot, and it will have complete history and detailed notes to draw upon - no corporate servers required.</div>
+            </div>
+
+            <h3>Building on Snap-ins</h3>
+            <p>
+                Snap-ins are part of how this project sustains itself. ContainAI will develop
+                industry-specific snap-ins — tools for lawyers, medical professionals, tradespeople,
+                educators, and others — available for a monthly fee. Third-party developers are
+                explicitly welcome to build and sell their own snap-ins on the same platform. The base
+                Zynkbot app is and will remain free; the snap-in ecosystem is how the project grows
+                without becoming dependent on advertising or data collection.
+            </p>
+
+            <h3>Optional Memory Backup</h3>
+            <p>
+                Zynkbot's memory database lives entirely on your device. An optional encrypted cloud
+                backup service is planned — for a small monthly fee comparable to what you'd pay for
+                cloud storage, your memory database can be synced to a secure server. Useful when
+                you're away from your home network and need a device up to date, or as protection
+                against device loss. Nothing about this is required; it's a convenience for people
+                who want it.
+            </p>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- ZYNKCLUSTER -->
+        <section id="zynkcluster" class="content-section">
+            <h2>⚡ ZynkCluster <span style="font-size: 0.55em; color: #6272a4; font-weight: 400; font-style: italic;">Upcoming</span></h2>
+            <p>
+                Most AI models are constrained by the VRAM of a single device. A model like
+                Mixtral 8x22B requires roughly 140GB of VRAM — more than any single consumer GPU
+                can hold. ZynkCluster proposes distributing that model across multiple devices on
+                your local network, with each machine's GPU running a different part simultaneously.
+                Models that are simply out of reach on a single consumer machine become accessible
+                across hardware you already own — no cloud, no data leaving your network.
+            </p>
+            <p>
+                Zynkbot uses Mixture of Experts (MoE) models, where each query activates only a
+                small subset of the model's expert sub-networks. The number of active experts per
+                token depends on the model — Mixtral uses 2, DBRX uses 4, OLMoE uses 8. ZynkCluster
+                maps those active experts to separate devices and runs them in parallel. Unlike
+                existing distributed inference tools that pass every token through every device in
+                sequence, ZynkCluster only involves the devices that are needed — and uses them
+                at the same time.
+            </p>
+            <p>
+                ZynkCluster is built on the same device-pairing infrastructure as ZynkSync. The
+                system that already syncs your memories across devices becomes the coordination
+                layer for pooling their compute.
+            </p>
+            <p>
+                The approach is theoretically sound and grounded in published research on MoE
+                architectures. Development is ongoing; implementation will proceed as other
+                priorities, including Android support, are completed.
+            </p>
+            <div style="margin-top: 28px; display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="../zynkcluster/" class="cta-button">Learn More</a>
+                <a href="https://github.com/MSkill1/zynkbot/tree/main/labs/moe_poc" class="cta-button secondary">Architecture &amp; Code</a>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- COMPARISON -->
+        <section style="padding: 60px 20px;">
+            <div class="comparison" style="margin: 0;">
+                <h2>Why Choose Zynkbot?</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-column others">
+                        <h3>Most AI Assistants</h3>
+                        <ul>
+                            <li>Store your data on their servers</li>
+                            <li>Use conversations to train models</li>
+                            <li>Require internet connectivity</li>
+                            <li>Black-box decision making</li>
+                            <li>No control over memory</li>
+                            <li>Surveillance-based business model</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-column zynkbot">
+                        <h3>Zynkbot</h3>
+                        <ul>
+                            <li>Your data stays on your device</li>
+                            <li>No training on your conversations</li>
+                            <li>Works offline (local-first)</li>
+                            <li>Transparent memory and reasoning</li>
+                            <li>Full control over all data</li>
+                            <li>Privacy-first, user-serving design</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUICK START -->
+        <section id="install" class="install-section">
+            <h2>Download Zynkbot v0.9.0</h2>
+            <p style="text-align: center; color: #ccd4ec; margin-bottom: 30px; font-size: 1.1rem;">
+                No compilation required. A setup wizard downloads all required AI models on first launch.
+            </p>
+
+            <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+                <!-- Windows -->
+                <div style="background: #1e2030; border: 1px solid #44475a; border-radius: 12px; padding: 24px; min-width: 200px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">🪟</div>
+                    <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 16px;">Windows</div>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_x64-setup.exe"
+                       class="cta-button" style="display: block; margin-bottom: 10px; font-size: 0.9rem;">
+                        ⬇ Download .exe
+                    </a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_x64_en-US.msi"
+                       class="cta-button secondary" style="display: block; font-size: 0.9rem;">
+                        ⬇ Download .msi
+                    </a>
+                </div>
+
+                <!-- Linux -->
+                <div style="background: #1e2030; border: 1px solid #44475a; border-radius: 12px; padding: 24px; min-width: 200px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">🐧</div>
+                    <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 16px;">Linux</div>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_amd64.deb"
+                       class="cta-button" style="display: block; margin-bottom: 10px; font-size: 0.9rem;">
+                        ⬇ Download .deb
+                    </a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.0_amd64.AppImage"
+                       class="cta-button secondary" style="display: block; margin-bottom: 10px; font-size: 0.9rem;">
+                        ⬇ Download .AppImage
+                    </a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot-0.9.0-1.x86_64.rpm"
+                       class="cta-button secondary" style="display: block; font-size: 0.9rem;">
+                        ⬇ Download .rpm
+                    </a>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: #aab; font-size: 0.9rem; margin-top: 8px;">
+                Local models run CPU-only in pre-built binaries — API models (Claude, GPT-4, Grok) work at full speed.<br>
+                See the <a href="https://github.com/MSkill1/zynkbot/blob/main/docs/LINUX_INSTALLATION_GUIDE.md" style="color: #8be9fd;">Linux</a>
+                or <a href="https://github.com/MSkill1/zynkbot/blob/main/docs/WINDOWS_INSTALLATION_GUIDE.md" style="color: #8be9fd;">Windows</a>
+                installation guide for full instructions.
+            </p>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="https://github.com/MSkill1/zynkbot/releases/latest" class="cta-button secondary">All releases &amp; source</a>
+                <a href="https://github.com/MSkill1/zynkbot/tree/main/docs" class="cta-button secondary">Documentation</a>
+            </div>
+        </section>
+
+        <!-- OPEN SOURCE -->
+        <section style="text-align: center; padding: 60px 20px; background: #1a1d28; border-radius: 12px; margin-bottom: 40px;">
+            <h2 style="font-size: 2rem; margin-bottom: 20px; color: #8be9fd;">Open Source &amp; Free</h2>
+            <p style="font-size: 1.2rem; color: #ccd4ec; max-width: 700px; margin: 0 auto 30px;">
+                Zynkbot is licensed under AGPL v3 for non-commercial use. Source code available on GitHub.
+                Commercial licensing available for businesses.
+            </p>
+            <div style="font-size: 1.5rem; font-style: italic; color: #50fa7b; margin-top: 30px;">
+                "Memory without surveillance. Intelligence without manipulation."
+            </div>
+        </section>
+
+        <section style="text-align: center; padding: 40px 20px;">
+            <p style="color: #6272a4; font-size: 0.95rem; margin-bottom: 16px;">If this project is useful to you, consider supporting it.</p>
+            <a href="https://ko-fi.com/mskill1" target="_blank" rel="noopener"
+               style="display: inline-block; background: #FF5E5B; color: #fff; font-weight: 600; font-size: 1rem;
+                      padding: 12px 28px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s;"
+               onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                ☕ Support on Ko-fi
+            </a>
+        </section>
+
+        <footer>
+            <p><strong>Zynkbot</strong> by <a href="../">ContainAI</a></p>
+            <p style="margin-top: 10px;">
+                <a href="../">ContainAI</a> |
+                <a href="../sdk/">SDK</a> |
+                <a href="../zynkcluster/">ZynkCluster</a> |
+                <a href="../foundation/">Foundation</a> |
+                <a href="docs/">Documentation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a> |
+                <a href="mailto:matt@containai.ai">Contact</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                Open Beta v0.9 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora)
+            </p>
+        </footer>
+    </div>
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        document.querySelectorAll('.screenshot').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
+</body>
+</html>

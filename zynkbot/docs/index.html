@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zynkbot Documentation - Installation guides, feature reference, architecture, and developer resources">
+    <meta name="keywords" content="Zynkbot documentation, Zynkbot install, privacy AI docs, ContainAI">
+    <meta name="author" content="Matthew Skillman">
+    <title>Zynkbot Documentation | ContainAI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* ── Header ── */
+
+        header {
+            padding: 36px 20px 28px;
+            border-bottom: 1px solid #44475a;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8be9fd 0%, #50fa7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .header-links a {
+            color: #8be9fd;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .header-links a:hover { color: #f8f8f2; }
+
+        .header-links .gh-link {
+            background: #44475a;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid #6272a4;
+        }
+
+        .header-links .gh-link:hover {
+            background: #6272a4;
+            color: #f8f8f2;
+        }
+
+        .breadcrumb { font-size: 0.85rem; color: #6272a4; margin-top: 8px; }
+        .breadcrumb a { color: #8be9fd; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .page-intro {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: #9aa5c4;
+            max-width: 700px;
+        }
+
+        /* ── Featured "Start Here" section ── */
+
+        .start-here { padding: 44px 20px 20px; }
+
+        .section-label {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #6272a4;
+            margin-bottom: 18px;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .featured-card {
+            background: #44475a;
+            border-radius: 12px;
+            border: 1px solid #6272a4;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-4px);
+            border-color: #8be9fd;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .featured-card h2 {
+            font-size: 1.2rem;
+            color: #f8f8f2;
+            margin-bottom: 10px;
+        }
+
+        .featured-card .card-desc {
+            font-size: 0.88rem;
+            color: #9aa5c4;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .featured-links { list-style: none; }
+        .featured-links li { margin-bottom: 6px; }
+
+        .featured-links a {
+            color: #8be9fd;
+            text-decoration: none;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .featured-links a:hover { background: #282a36; padding-left: 12px; }
+        .featured-links a:before { content: "→"; font-weight: bold; font-size: 0.78rem; }
+
+        .featured-links a.all-link {
+            color: #50fa7b;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* ── Quick Start ── */
+
+        .quick-start {
+            background: #1a1d28;
+            padding: 44px 20px;
+            border-radius: 12px;
+            margin: 36px 0;
+        }
+
+        .quick-start h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            color: #8be9fd;
+        }
+
+        .qs-sub {
+            text-align: center;
+            color: #6272a4;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .code-block {
+            background: #282a36;
+            padding: 24px;
+            border-radius: 8px;
+            border-left: 4px solid #8be9fd;
+            overflow-x: auto;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .code-block pre {
+            color: #50fa7b;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .qs-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.88rem;
+            color: #6272a4;
+        }
+
+        .qs-link a { color: #8be9fd; text-decoration: none; font-weight: 600; }
+
+        /* ── Reference section ── */
+
+        .reference { padding: 10px 20px 48px; }
+
+        .reference-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 18px;
+        }
+
+        .reference-col h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6272a4;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #44475a;
+        }
+
+        .reference-links { list-style: none; }
+        .reference-links li { margin-bottom: 2px; }
+
+        .reference-links a {
+            color: #9aa5c4;
+            text-decoration: none;
+            font-size: 0.88rem;
+            display: block;
+            padding: 6px 10px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .reference-links a:hover {
+            background: #44475a;
+            color: #f8f8f2;
+            padding-left: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 36px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 20px;
+        }
+
+        footer a { color: #8be9fd; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 900px) {
+            .featured-grid { grid-template-columns: 1fr; }
+            .reference-grid { grid-template-columns: 1fr; gap: 28px; }
+            .header-top { flex-direction: column; }
+        }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <div class="header-top">
+                <div class="logo">Zynkbot Docs</div>
+                <div class="header-links">
+                    <a href="https://github.com/MSkill1/zynkbot" class="gh-link">GitHub ↗</a>
+                    <a href="https://github.com/MSkill1/zynkbot/issues">Issues</a>
+                    <a href="https://github.com/MSkill1/zynkbot/blob/main/CONTRIBUTING.md">Contribute</a>
+                    <a href="mailto:matt@containai.ai">Contact</a>
+                </div>
+            </div>
+            <div class="breadcrumb">
+                <a href="https://containai.ai">ContainAI</a> /
+                <a href="https://containai.ai/zynkbot">Zynkbot</a> /
+                Documentation
+            </div>
+            <p class="page-intro">
+                Documentation for Zynkbot — a privacy-first AI companion with persistent local memory,
+                offline operation, and cross-device sync. Start with the case studies if you're new,
+                or jump to installation if you're ready to run it.
+            </p>
+        </header>
+
+        <!-- ── START HERE ── -->
+        <section class="start-here">
+            <div class="section-label">Start Here</div>
+            <div class="featured-grid">
+
+                <div class="featured-card" id="case-studies">
+                    <h2>📋 Case Studies</h2>
+                    <p class="card-desc">
+                        Real-world scenarios — HIPAA-compliant clinics, child safety, emergency
+                        response, journalist source protection, and developer workflows. The best
+                        starting point for understanding what Zynkbot is actually for.
+                    </p>
+                    <ul class="featured-links">
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/case_studies/emergency_resilience.md">Emergency Resilience</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/case_studies/hipaa_compliance.md">HIPAA Compliance</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/case_studies/child_mode.md">Child Safety Mode</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/case_studies/journalist_source_protection.md">Journalist Source Protection</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/case_studies/developer_workflows.md">Developer Workflows</a></li>
+                        <li><a class="all-link" href="https://github.com/MSkill1/zynkbot/tree/main/docs/case_studies">All Case Studies →</a></li>
+                    </ul>
+                </div>
+
+                <div class="featured-card">
+                    <h2>🎯 Project Vision</h2>
+                    <p class="card-desc">
+                        Why Zynkbot exists — the anti-surveillance mission, the ContainAI platform,
+                        long-term goals, and what makes this different from cloud AI. Read this to
+                        understand the principles behind the design decisions.
+                    </p>
+                    <ul class="featured-links">
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/PROJECT_VISION.md">Project Vision &amp; Mission</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/DIGITAL_RESILIENCE.md">Digital Resilience</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/ROADMAP.md">Development Roadmap</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/SDK_VISION.md">SDK Vision</a></li>
+                    </ul>
+                </div>
+
+                <div class="featured-card">
+                    <h2>📖 Get Started</h2>
+                    <p class="card-desc">
+                        Download a pre-built binary for Windows or Linux — no compilation required.
+                        A first-run wizard handles all model downloads automatically.
+                    </p>
+                    <ul class="featured-links">
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/README.md">Quick Start (Windows &amp; Linux)</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/WINDOWS_INSTALLATION_GUIDE.md">Windows Installation Guide</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/LINUX_INSTALLATION_GUIDE.md">Linux Installation Guide</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/FEATURES.md">Features Overview</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/INSTALLATION_TROUBLESHOOTING.md">Troubleshooting</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ── QUICK START ── -->
+        <section class="quick-start">
+            <h2>Quick Start</h2>
+            <p class="qs-sub">Download and run — no compilation required</p>
+            <div class="code-block">
+                <pre># Linux
+sudo dpkg -i Zynkbot_0.9.0_amd64.deb
+
+# Windows
+# Run Zynkbot_0.9.0_x64-setup.exe as Administrator</pre>
+            </div>
+            <p class="qs-link">
+                <a href="https://github.com/MSkill1/zynkbot/releases/latest">Download from GitHub Releases →</a>
+            </p>
+            <p class="qs-link">
+                Local models run CPU-only — can have 60+ second responses on some hardware. API models work at full speed.
+                Full instructions → <a href="https://github.com/MSkill1/zynkbot/blob/main/README.md">README.md</a>
+            </p>
+        </section>
+
+        <!-- ── REFERENCE ── -->
+        <section class="reference">
+            <div class="section-label">Reference</div>
+            <div class="reference-grid">
+
+                <div class="reference-col">
+                    <h3>For Users</h3>
+                    <ul class="reference-links">
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/FEATURES.md">Features Guide</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/NETWORKING_FEATURES.md">Networking — ZynkSync, ZynkLink, ZChat, Ensemble</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/snap_ins/professional_snap_ins.md">Professional Snap-ins</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/snap_ins/personal_snap_ins.md">Personal Snap-ins</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/INSTALLATION_TROUBLESHOOTING.md">Troubleshooting</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License (AGPL v3)</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/COMMERCIAL_LICENSE.md">Commercial License</a></li>
+                    </ul>
+                </div>
+
+                <div class="reference-col">
+                    <h3>For Developers &amp; Contributors</h3>
+                    <ul class="reference-links">
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/architecture_and_development/MODEL_ARCHITECTURE.md">ML Model Architecture</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/architecture_and_development/MEMORY_PROCESSING_PIPELINE.md">Memory Processing Pipeline</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/architecture_and_development/PROMPT_CONSTRUCTION_PIPELINE.md">Prompt Construction Pipeline</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/architecture_and_development/DATABASE_SCHEMA.md">Database Schema</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/docs/DIGITAL_RESILIENCE.md">Digital Resilience Overview</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/CONTRIBUTING.md">Contributing Guide</a></li>
+                        <li><a href="https://github.com/MSkill1/zynkbot/blob/main/CHANGELOG.md">Changelog</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Zynkbot Documentation</strong></p>
+            <p style="margin-top: 10px;">
+                <a href="https://containai.ai">ContainAI</a> |
+                <a href="https://containai.ai/zynkbot">Zynkbot</a> |
+                <a href="https://containai.ai/sdk">SDK</a> |
+                <a href="https://containai.ai/foundation">Foundation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a>
+            </p>
+            <p style="margin-top: 16px; font-size: 0.85rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                Building ethical AI infrastructure
+            </p>
+        </footer>
+
+    </div>
+</body>
+</html>

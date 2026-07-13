@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ContainAI SDK - Modular building blocks for ethical AI applications. Consent-based safety, persistent memory, and user control.">
+    <meta name="keywords" content="ContainAI SDK, ethical AI, privacy AI, local AI, semantic memory, AI safety, open source AI">
+    <meta name="author" content="Matthew Skillman">
+    <title>ContainAI SDK - Build Ethical AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #44475a;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8be9fd 0%, #50fa7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb { font-size: 0.9rem; color: #6272a4; margin-top: 10px; }
+        .breadcrumb a { color: #8be9fd; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .hero h1 { font-size: 2.4rem; color: #f8f8f2; margin-bottom: 20px; }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #ccd4ec;
+            max-width: 750px;
+            margin: 0 auto 30px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: #6272a4;
+            color: #f8f8f2;
+            margin-bottom: 30px;
+            letter-spacing: 0.05em;
+        }
+
+        .cta-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #8be9fd;
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover { background: #50fa7b; transform: translateY(-2px); }
+
+        .cta-button.secondary {
+            background: #44475a;
+            color: #8be9fd;
+        }
+
+        .cta-button.secondary:hover { background: #6272a4; }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #8be9fd;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #9aa5c4;
+            max-width: 650px;
+            margin: 0 auto 40px;
+            font-size: 1.05rem;
+        }
+
+        .modules-section { padding: 60px 20px; }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .module-card {
+            background: #44475a;
+            border: 1px solid #6272a4;
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover {
+            border-color: #8be9fd;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .module-icon { font-size: 2rem; margin-bottom: 12px; }
+
+        .module-card h3 {
+            color: #8be9fd;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .module-card p { color: #ccd4ec; font-size: 0.95rem; line-height: 1.7; }
+
+        .module-card .use-case {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #6272a4;
+            font-size: 0.85rem;
+            color: #9aa5c4;
+        }
+
+        .module-card .use-case span { color: #50fa7b; font-weight: 600; }
+
+        .licensing-section {
+            background: #1a1d28;
+            border-radius: 12px;
+            padding: 60px 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .licensing-section h2 { color: #8be9fd; font-size: 1.8rem; margin-bottom: 10px; }
+        .licensing-section > p { color: #9aa5c4; margin-bottom: 40px; font-size: 1.05rem; }
+
+        .license-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            text-align: left;
+        }
+
+        .license-card {
+            background: #282a36;
+            border-radius: 10px;
+            padding: 28px;
+            border: 1px solid #44475a;
+        }
+
+        .license-card h3 { color: #50fa7b; margin-bottom: 8px; font-size: 1.15rem; }
+        .license-card .price { color: #8be9fd; font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+        .license-card ul { list-style: none; }
+        .license-card ul li { color: #ccd4ec; font-size: 0.95rem; padding: 5px 0; }
+        .license-card ul li::before { content: "✓ "; color: #50fa7b; font-weight: 700; }
+        .license-card ul li.no::before { content: "✗ "; color: #ff5555; }
+
+        .principles-section { padding: 60px 20px; }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .principle {
+            padding: 20px;
+            background: #282a36;
+            border-radius: 8px;
+            border-left: 4px solid #8be9fd;
+        }
+
+        .principle h3 { color: #50fa7b; margin-bottom: 8px; font-size: 1.05rem; }
+        .principle p { color: #9aa5c4; font-size: 0.9rem; }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 40px;
+        }
+
+        footer a { color: #8be9fd; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        .module-group { margin-bottom: 48px; }
+
+        .module-group-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #6272a4;
+            padding-bottom: 12px;
+            margin-bottom: 0;
+            border-bottom: 2px solid #44475a;
+        }
+
+        .module-row {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 24px;
+            padding: 26px 0;
+            border-bottom: 1px solid #2d2f40;
+            align-items: start;
+        }
+
+        .module-row:last-child { border-bottom: none; }
+
+        .module-row-left { text-align: center; }
+
+        .module-row-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+
+        .module-row-name {
+            color: #8be9fd;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .module-row-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            color: #50fa7b;
+            background: rgba(80,250,123,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 6px;
+            border: 1px solid rgba(80,250,123,0.2);
+        }
+
+        .module-row-right p {
+            color: #ccd4ec;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .module-row-right p:last-child { margin-bottom: 0; }
+
+        .module-row-right .use-case {
+            font-size: 0.87rem;
+            color: #9aa5c4;
+            padding-top: 10px;
+            border-top: 1px solid #2d2f40;
+            margin-top: 4px;
+        }
+
+        .module-row-right .use-case span { color: #50fa7b; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .modules-grid { grid-template-columns: 1fr; }
+            .license-grid { grid-template-columns: 1fr; }
+            .licensing-section { padding: 40px 20px; }
+            .module-row { grid-template-columns: 1fr; gap: 12px; }
+            .module-row-left { display: flex; align-items: center; gap: 12px; text-align: left; }
+            .module-row-icon { font-size: 1.5rem; margin-bottom: 0; }
+        }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ContainAI SDK</div>
+            <div class="breadcrumb">
+                <a href="https://containai.ai">ContainAI</a> / SDK
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="status-badge">PLANNED 2026</div>
+            <h1>Build Ethical AI From the Ground Up</h1>
+            <p>
+                You want to build an AI application that respects users — one with persistent memory,
+                safety guardrails, and no surveillance. You shouldn't have to invent these from scratch.
+                The ContainAI SDK provides the hard parts as modular, local-first components
+                you can drop into any project.
+            </p>
+            <div class="cta-row">
+                <a href="https://github.com/MSkill1/zynkbot" class="cta-button" target="_blank">View on GitHub</a>
+                <a href="https://containai.ai/zynkbot" class="cta-button secondary">See It in Action (Zynkbot)</a>
+            </div>
+        </section>
+
+        <section class="modules-section">
+            <h2 class="section-title">Modules</h2>
+            <p class="section-subtitle">
+                Each module is independent. Use one, use all. Designed for local-first deployment —
+                when you use an external LLM API, data goes to that provider per their policy,
+                but always by your choice, never silently.
+            </p>
+
+            <div class="modules-list">
+
+                <div class="module-group">
+                    <div class="module-group-label">Memory</div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🧠</span>
+                            <div class="module-row-name">Semantic Memory Engine</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>A multi-layer memory pipeline that runs entirely on-device. Semantic search uses <strong>all-MiniLM-L6-v2</strong> embeddings (via Candle, pure Rust). Entity extraction uses <strong>BERT NER</strong> to identify people, places, dates, and organizations from natural language. An NLP enhancer handles title generation, tagging, sentiment analysis, and event detection — all offline.</p>
+                            <p class="use-case"><span>Use for:</span> Any AI app that needs to remember things about its user across sessions.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🕸️</span>
+                            <div class="module-row-name">Memory Graph &amp; Relationships</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Link memories to each other with typed relationships. Traverse the graph to surface connected context. Each memory carries a namespace category (personal, work, health, etc.) for filtering and organizing the memory database.</p>
+                            <p class="use-case"><span>Use for:</span> Knowledge management tools, research assistants, personal knowledge graphs.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">⚡</span>
+                            <div class="module-row-name">Contradiction Detection</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Detects when incoming information conflicts with what is already stored. Surfaces the conflict, allows the user or system to resolve it, and updates the memory database accordingly. Keeps long-lived assistants accurate over time.</p>
+                            <p class="use-case"><span>Use for:</span> Personal assistants, medical companions, any app where stale facts cause real problems.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-group">
+                    <div class="module-group-label">Safety</div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🔒</span>
+                            <div class="module-row-name">Containment Layer</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Configurable safety enforcement that runs entirely on-device. Supports multiple containment profiles — from a permissive general-use mode to a strict child-safe mode, a HIPAA-aligned clinical mode that blocks inappropriate medical advice, and custom profiles for your domain. Screens both inputs and outputs. No moderation API calls, no conversation data sent externally.</p>
+                            <p class="use-case"><span>Use for:</span> Any AI app that needs ethical guardrails without outsourcing safety to a third party.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-group">
+                    <div class="module-group-label">Model Connectivity</div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🔀</span>
+                            <div class="module-row-name">Multi-Provider LLM Router</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Unified interface for routing to Anthropic, OpenAI, xAI, or local models. Swap providers without changing application logic. Users bring their own API keys — no vendor lock-in.</p>
+                            <p class="use-case"><span>Use for:</span> Any app that needs provider flexibility or wants to support local-only operation.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🎭</span>
+                            <div class="module-row-name">Ensemble Mode</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Run a query across multiple models simultaneously and synthesize a consensus response. Reduces hallucinations by cross-referencing outputs. Ensemble responses can be introduced at any point in an ongoing conversation.</p>
+                            <p class="use-case"><span>Use for:</span> Medical, legal, or financial tools where accuracy matters more than speed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-group">
+                    <div class="module-group-label">Networking</div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🔄</span>
+                            <div class="module-row-name">ZynkSync Protocol</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Local-network peer-to-peer memory synchronization. No cloud required. Devices on the same network discover each other and sync memory systems privately. Conflict resolution built in.</p>
+                            <p class="use-case"><span>Use for:</span> Multi-device personal assistants, household AI tools, offline-first applications.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">📁</span>
+                            <div class="module-row-name">ZynkLink File Sharing</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Device-to-device file sharing between paired devices on the local network. Share directories with configurable read/write permissions. Files are browsed, indexed, and transferred directly between devices with no cloud intermediary.</p>
+                            <p class="use-case"><span>Use for:</span> Collaborative tools, multi-device workflows, offline file exchange between trusted devices.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">💬</span>
+                            <div class="module-row-name">ZChat</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Local-network device-to-device messaging. Send, deliver, and read messages between paired devices without a server or internet connection. Supports unread counts, delivery tracking, and multi-device message routing.</p>
+                            <p class="use-case"><span>Use for:</span> Private team communication tools, household AI networks, any app needing secure local messaging.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-group">
+                    <div class="module-group-label">Knowledge &amp; Extensions</div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">📚</span>
+                            <div class="module-row-name">Knowledge Base Manager</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Index and search a local folder of documents. Gives any AI app retrieval-augmented generation (RAG) over user-owned files — PDFs, notes, manuals — without a hosted vector database.</p>
+                            <p class="use-case"><span>Use for:</span> Document assistants, personal research tools, enterprise knowledge bases that must stay on-prem.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🔌</span>
+                            <div class="module-row-name">Snap-ins</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Domain-specific extensions that wrap the core modules for a particular use case. Snap-ins are primarily intentional and scoped — the user opens a diet tracker, a session notes tool, or a structured journal and interacts with it directly. This keeps overhead low and the user in control.</p>
+                            <p>Snap-ins can also work conversationally: a therapist can paste session notes into the chat interface and have them automatically indexed per patient — no separate app needed. The included therapist snap-in uses exactly this model.</p>
+                            <p>Third-party developers are welcome to build and distribute commercial snap-ins. See the <a href="../foundation/" style="color: #8be9fd;">Foundation page</a> for details on the sustainability model.</p>
+                            <p class="use-case"><span>Use for:</span> Building structured domain tools — diet logging, health tracking, session notes, journaling — on top of the memory and knowledge base modules.</p>
+                        </div>
+                    </div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">🗝️</span>
+                            <div class="module-row-name">API Key Manager</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Encrypted local credential storage for multi-provider API keys. Keys never leave the device. Simple interface for storing, retrieving, and rotating credentials across providers.</p>
+                            <p class="use-case"><span>Use for:</span> Any app where users supply their own API keys and security matters.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-group">
+                    <div class="module-group-label">Distributed Compute</div>
+                    <div class="module-row">
+                        <div class="module-row-left">
+                            <span class="module-row-icon">⚡</span>
+                            <div class="module-row-name">ZynkCluster</div>
+                            <div class="module-row-badge">Upcoming</div>
+                        </div>
+                        <div class="module-row-right">
+                            <p>Distributed Mixture of Experts inference over consumer LAN. Pool the GPUs across devices you already own to run models far too large for any single machine — with no cloud dependency. ZynkCluster extends ZynkSync's device-pairing infrastructure to coordinate compute alongside memory sync.</p>
+                            <p>Unlike sequential layer-based approaches, ZynkCluster routes MoE expert activations to parallel devices. Only the experts needed for a given token are invoked, and they run simultaneously rather than one after another.</p>
+                            <p class="use-case"><span>Use for:</span> Running large models (Mixtral 8x22B and above) across multi-device home or lab networks. Entirely local, no datacenter hardware required.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+                
+
+        <section class="licensing-section">
+            <h2>Licensing</h2>
+            <p>Use the SDK free for personal and non-commercial projects. Commercial use requires a license.</p>
+
+            <div class="license-grid">
+                <div class="license-card">
+                    <h3>Non-Commercial</h3>
+                    <div class="price">Free</div>
+                    <ul>
+                        <li>Personal projects</li>
+                        <li>Research &amp; academia</li>
+                        <li>Open source projects (AGPL)</li>
+                        <li>Derivatives must stay open source</li>
+                        <li class="no">Commercial products or services</li>
+                    </ul>
+                </div>
+
+                <div class="license-card">
+                    <h3>Commercial</h3>
+                    <div class="price">Paid License</div>
+                    <ul>
+                        <li>Use in closed-source products</li>
+                        <li>Commercial SaaS or on-prem deployment</li>
+                        <li>No open-source requirement</li>
+                        <li>Priority support</li>
+                        <li>Inquire for pricing</li>
+                    </ul>
+                </div>
+
+                <div class="license-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom</div>
+                    <ul>
+                        <li>Everything in Commercial</li>
+                        <li>Multi-team / multi-product</li>
+                        <li>Security audit access</li>
+                        <li>Integration consulting</li>
+                        <li>Custom SLA</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p style="margin-top: 30px; color: #9aa5c4; font-size: 0.95rem;">
+                Commercial licensing inquiries: <a href="mailto:matt@containai.ai" style="color: #8be9fd;">matt@containai.ai</a>
+            </p>
+        </section>
+
+        <section class="modules-section" style="padding-top: 20px;">
+            <h2 class="section-title">Enterprise Use Cases</h2>
+            <p class="section-subtitle">
+                The local-first architecture makes the SDK a natural fit for industries
+                where data cannot leave the premises.
+            </p>
+            <div class="modules-grid">
+
+                <div class="module-card">
+                    <div class="module-icon">🏥</div>
+                    <h3>Healthcare</h3>
+                    <p>
+                        Build patient-facing AI companions that remember treatment history,
+                        medications, and appointments — with a HIPAA-aligned architecture
+                        by design. No conversation data ever leaves the facility.
+                        Contradiction detection flags when a patient reports something
+                        inconsistent with their records.
+                    </p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon">⚖️</div>
+                    <h3>Legal &amp; Compliance</h3>
+                    <p>
+                        Build AI tools for legal teams that remember case history,
+                        client preferences, and deadlines — with no data leaving the firm.
+                        Privileged information stays on-premises. Full audit trail of
+                        what was remembered and when.
+                    </p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon">🏦</div>
+                    <h3>Financial Services</h3>
+                    <p>
+                        AI assistants for advisors or clients that remember financial
+                        goals, risk profiles, and prior conversations. Works fully
+                        local with on-premises models, or with your choice of API
+                        provider. Ensemble Mode cross-references multiple models to
+                        reduce hallucination risk in accuracy-critical applications.
+                    </p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon">🏢</div>
+                    <h3>Enterprise On-Premises</h3>
+                    <p>
+                        Deploy fully air-gapped with local GGUF models and on-prem
+                        document knowledge bases. No internet connection required.
+                        ZynkSync keeps multiple internal devices in sync without
+                        a cloud intermediary. Namespaced memory separates
+                        teams or departments within the same deployment.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="principles-section">
+            <h2 class="section-title">Design Principles</h2>
+            <p class="section-subtitle">Every module is built around the same non-negotiables.</p>
+            <div class="principles-grid">
+                <div class="principle">
+                    <h3>Local-First</h3>
+                    <p>All modules run on the user's device. When you choose to use an external LLM API (Anthropic, OpenAI, xAI), conversation data is sent to that provider per their privacy policy — but only with your explicit choice, and never by the SDK itself.</p>
+                </div>
+                <div class="principle">
+                    <h3>User Owns the Data</h3>
+                    <p>Memory, keys, documents — all stored locally in open formats. No lock-in. Export anytime.</p>
+                </div>
+                <div class="principle">
+                    <h3>Modular by Design</h3>
+                    <p>Use one module or all of them. No forced dependencies between components.</p>
+                </div>
+                <div class="principle">
+                    <h3>Auditable</h3>
+                    <p>AGPL source code. No black-box safety decisions. Users can see why a memory was stored or a message was flagged.</p>
+                </div>
+                <div class="principle">
+                    <h3>No Surveillance</h3>
+                    <p>No telemetry. No usage analytics. No phoning home. What happens on the device stays on the device.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>ContainAI SDK</strong> — Building blocks for ethical AI</p>
+            <p style="margin-top: 10px;">
+                <a href="https://containai.ai">ContainAI</a> |
+                <a href="https://containai.ai/zynkbot">Zynkbot</a> |
+                <a href="https://containai.ai/zynkcluster">ZynkCluster</a> |
+                <a href="https://containai.ai/foundation">Foundation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="mailto:matt@containai.ai">Contact</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright © 2024-2026 Matthew Skillman / ContainAI<br>
+                AGPL v3 (non-commercial) + Commercial license available
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

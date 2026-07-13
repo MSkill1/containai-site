@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ContainAI - Building ethical AI infrastructure. Tools and frameworks for AI that serves users, not exploits them.">
+    <meta name="keywords" content="ContainAI, Zynkbot, privacy AI, ethical AI, local AI, AI assistant">
+    <meta name="author" content="Matthew Skillman">
+    <title>ContainAI - Ethical AI Infrastructure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 50px;
+            border-bottom: 1px solid #44475a;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8be9fd 0%, #50fa7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            color: #8be9fd;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .header-mission {
+            font-size: 1.1rem;
+            color: #9aa5c4;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Shared section styles */
+        .content-section {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 70px 40px;
+        }
+
+        .section-dark {
+            background: #1a1d28;
+        }
+
+        .section-mid {
+            background: #282a36;
+        }
+
+        .content-section h2 {
+            font-size: 1.9rem;
+            color: #8be9fd;
+            margin-bottom: 10px;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            color: #ccd4ec;
+            line-height: 1.85;
+            margin-bottom: 22px;
+        }
+
+        .content-section strong { color: #f8f8f2; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+        }
+
+        .badge-live { background: #50fa7b; color: #282a36; }
+        .badge-planned { background: #6272a4; color: #f8f8f2; }
+        .badge-research { background: #bd93f9; color: #282a36; }
+
+        .section-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #8be9fd;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .section-link:hover { color: #50fa7b; }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #8be9fd;
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            background: #50fa7b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 233, 253, 0.3);
+        }
+
+        .cta-button.secondary { background: #44475a; color: #8be9fd; }
+        .cta-button.secondary:hover { background: #6272a4; }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 20px;
+        }
+
+        footer a { color: #8be9fd; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2rem; }
+            .tagline { font-size: 1.1rem; }
+            .content-section { padding: 50px 20px; }
+            .content-section h2 { font-size: 1.5rem; }
+        }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <div class="logo">ContainAI</div>
+            <div class="tagline">Ethical AI Infrastructure</div>
+            <p class="header-mission">
+                There are no enforceable ethical standards for AI products today.
+                We're building them — through tools and open infrastructure.
+            </p>
+        </header>
+
+        <!-- 1. THE PROBLEM -->
+        <div class="section-dark">
+            <div class="content-section">
+                <h2>The Immediate Problem</h2>
+                <p>
+                    There are currently no enforceable ethical standards for AI products. A company can build
+                    an AI assistant that collects intimate personal data, constructs detailed behavioral
+                    profiles, and monetizes that information — and as long as it's buried in a
+                    terms-of-service agreement, it's entirely legal. A children's educational AI can be
+                    engineered to maximize engagement in ways that exploit developing psychology with no certification or regulatory requirements, or even industry standards.
+                </p>
+                <p>
+                    This is the same regulatory vacuum that allowed social media platforms to be deliberately
+                    engineered for addiction in the 2010s. The consequences — documented mental health crises,
+                    political radicalization, the quiet erosion of privacy — took years to become visible and
+                    are still largely unaddressed. AI is more intimate, is developing faster, and has deeper access
+                    to personal context than social media ever did. The window to establish ethical standards as common practice during AI development will be brief.
+                </p>
+                <p>This isn't an abstract concern. When AI companies train their models on your conversations, the consequences are personal:</p>
+                <ul style="color: #ccd4ec; font-size: 1.1rem; line-height: 1.85; margin: 0 0 22px 1.4em;">
+                    <li style="margin-bottom: 10px;"><strong>It can't be undone.</strong> Closing your account doesn't remove what the model learned from you — there is no delete button once ypur data has been incorporated into the model.</li>
+                    <li style="margin-bottom: 10px;"><strong>Your conversations can be extracted.</strong> Researchers have demonstrated that training data can be recovered from models through careful prompting.</li>
+                    <li style="margin-bottom: 10px;"><strong>You're building their product for free.</strong> Your health anxieties, relationship struggles, and financial stress directly improve a commercial product you don't own, without compensation or consent.</li>
+                    <li style="margin-bottom: 10px;"><strong>It surfaces in strangers' responses.</strong> Patterns from your data can influence what the model says to other users.</li>
+                    <li style="margin-bottom: 10px;"><strong>Future use is unpredictable.</strong> Data collected under today's laws may be used very differently in 10 years — through acquisitions, legal subpoenas, or regulatory changes you can't anticipate.</li>
+                    <li style="margin-bottom: 10px;"><strong>The "nothing to hide" fallacy.</strong> What people share with AI at 3am — health fears, grief, things they won't tell another person — is precisely what insurance companies, employers, and advertisers want most.</li>
+                </ul>
+                <p>
+                    ContainAI's goal isn't just to build better tools. It's to demonstrate what ethical AI
+                    looks like in practice and to help establish the baseline standards that don't yet
+                    exist — starting with the simplest possible questions: Does this product build a profile on children? Disclosing this to parents should be a basic requirement. Does it retain your conversations? Is your personal context used to train models without your consent? Users have a right to the answers to these questions beyond what a corporation decides to disclose about its practices. Currently AI companies have data collection as their business model — it doesn't need to be this way; that's a choice. ContainAI chooses a different path — open-source and user-focused, with industry-specific AI tools and services funding continuing development. Your personal data stays private — as it should.
+                </p>
+            </div>
+        </div>
+
+        <!-- 2. ZYNKBOT -->
+        <div class="section-mid">
+            <div class="content-section">
+                <div class="status-badge badge-live">OPEN BETA — v0.9</div>
+                <h2>Zynkbot: Proof That Ethical AI Is Buildable</h2>
+                <p>
+                    You can't advocate for a standard you haven't demonstrated. Zynkbot is the working
+                    proof — a privacy-first AI companion with persistent local memory, cross-device sync,
+                    and complete user control. No surveillance. No data collection. No training on your
+                    conversations. Everything runs on your own hardware, under your control.
+                </p>
+                <p>Zynkbot was developed to show that privacy <em>and</em> capability, local processing <em>and</em> persistent memory, sustainability <em>and</em> open-sourcing are all viable choices.  They exist now - available and free for windows and linux users - in <strong>Zynkbot.</strong>
+                </p>
+                <a href="zynkbot/" class="section-link">Discover Zynkbot →</a>
+            </div>
+        </div>
+
+        <!-- 3. SDK -->
+        <div class="section-dark">
+            <div class="content-section">
+                <div class="status-badge badge-planned">PLANNED 2026</div>
+                <h2>The SDK: So Anyone Can Build It</h2>
+                <p>
+                    A single ethical AI product proves the concept. An open SDK makes it replicable.
+                    The ContainAI SDK will provide the building blocks — local memory management,
+                    privacy-preserving retrieval, consent-based data handling — so developers can build
+                    ethical AI applications without reinventing the architecture from scratch.
+                </p>
+                <p>
+                    Free for personal, research, and open-source use under AGPL. Commercial licensing
+                    available for products and services. Revenue from commercial licenses funds Foundation
+                    operations.
+                </p>
+                <a href="sdk/" class="section-link">Learn More →</a>
+            </div>
+        </div>
+
+        <!-- 4. ZYNKCLUSTER -->
+        <div class="section-mid">
+            <div class="content-section">
+                <div class="status-badge badge-research">RESEARCH PHASE</div>
+                <h2>ZynkCluster: Independence From Corporate Infrastructure</h2>
+                <p>
+                    Even a fully private AI companion still depends on corporate infrastructure if the
+                    underlying model requires cloud compute or proprietary APIs. ZynkCluster is the
+                    research project working on that problem — a system for distributing large
+                    Mixture-of-Experts models across multiple consumer devices on a local network, so
+                    that models currently out of reach on any single machine become accessible across
+                    hardware you already own.
+                </p>
+                <p>
+                    If this works, it closes the last dependency: genuinely capable AI that runs entirely
+                    on your own hardware, with no corporate infrastructure in the loop at any point.
+                    The theory is sound and grounded in published MoE research. Implementation follows
+                    Zynkbot v1.0 and Android support.
+                </p>
+                <a href="zynkcluster/" class="section-link">Architecture &amp; Research →</a>
+            </div>
+        </div>
+
+        <!-- 5. FOUNDATION -->
+        <div class="section-dark">
+            <div class="content-section">
+                <div class="status-badge badge-planned">PLANNED 2028</div>
+                <h2>The Foundation: Making the Standard Official</h2>
+                <p>
+                    Tools and demonstrations matter. But lasting change requires an institution. The
+                    ContainAI Foundation — planned for 2028, following the Signal model — will be the
+                    nonprofit that maintains these projects, funds independent security audits, and
+                    advocates for a baseline ethical certification standard for AI products.
+                </p>
+                <p>
+                    The goal is concrete: provide a certification path that any AI company can apply for and a badge
+                    they can display to show that they meet the standard. Does this product collect data on children?
+                    Does it train models on user conversations without consent? Is its data handling
+                    independently auditable? Companies that meet the standard display the badge. If a company can't display that badge then that informs users as well.  That transparency —
+                    without waiting for legislation — shifts the market.
+                </p>
+                <a href="foundation/" class="section-link">Learn More →</a>
+            </div>
+        </div>
+
+        <!-- KO-FI -->
+        <section style="text-align: center; padding: 50px 20px;">
+            <p style="color: #6272a4; font-size: 0.95rem; margin-bottom: 16px;">If this project is useful to you, consider supporting it.</p>
+            <a href="https://ko-fi.com/mskill1" target="_blank" rel="noopener"
+               style="display: inline-block; background: #FF5E5B; color: #fff; font-weight: 600; font-size: 1rem;
+                      padding: 12px 28px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s;"
+               onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                ☕ Support on Ko-fi
+            </a>
+        </section>
+
+        <footer>
+            <p><strong>ContainAI</strong> — Building the infrastructure for ethical AI</p>
+            <p style="margin-top: 10px;">
+                <a href="zynkbot/">Zynkbot</a> |
+                <a href="sdk/">SDK</a> |
+                <a href="zynkcluster/">ZynkCluster</a> |
+                <a href="foundation/">Foundation</a> |
+                <a href="mailto:matt@containai.ai">Contact</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                AGPL v3 (non-commercial) + Commercial license available
+            </p>
+        </footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ContainAI Foundation - Non-profit organization supporting ethical AI development, following the Signal model">
+    <meta name="keywords" content="ContainAI Foundation, ethical AI, privacy-first AI, non-profit, open source AI">
+    <meta name="author" content="Matthew Skillman">
+    <title>ContainAI Foundation - Ethical AI for Everyone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #44475a;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8be9fd 0%, #50fa7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: #6272a4;
+            color: #f8f8f2;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #9aa5c4;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #6272a4;
+            margin-top: 10px;
+        }
+
+        .breadcrumb a {
+            color: #8be9fd;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #f8f8f2;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #9aa5c4;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .mission {
+            background: #1a1d28;
+            padding: 60px 20px;
+            border-radius: 12px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .mission h2 {
+            font-size: 2rem;
+            color: #8be9fd;
+            margin-bottom: 30px;
+        }
+
+        .mission p {
+            font-size: 1.2rem;
+            color: #9aa5c4;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            line-height: 1.8;
+        }
+
+        .mission-statement {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #50fa7b;
+            margin: 30px auto;
+            padding: 30px;
+            border-left: 4px solid #50fa7b;
+            background: #282a36;
+            border-radius: 8px;
+            max-width: 900px;
+            font-style: italic;
+        }
+
+        .pillars {
+            padding: 60px 20px;
+        }
+
+        .pillars h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: #8be9fd;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .pillar {
+            background: #44475a;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #6272a4;
+            transition: all 0.3s ease;
+        }
+
+        .pillar:hover {
+            transform: translateY(-5px);
+            border-color: #8be9fd;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .pillar-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .pillar h3 {
+            color: #8be9fd;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .pillar p {
+            color: #9aa5c4;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .pillar ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .pillar li {
+            color: #9aa5c4;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .pillar li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #50fa7b;
+            font-weight: bold;
+        }
+
+        .model {
+            background: #282a36;
+            padding: 60px 20px;
+            border-radius: 12px;
+            margin: 60px 0;
+        }
+
+        .model h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8be9fd;
+        }
+
+        .model-comparison {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .model-item {
+            background: #44475a;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #8be9fd;
+        }
+
+        .model-item h3 {
+            color: #50fa7b;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .model-item p {
+            color: #9aa5c4;
+            line-height: 1.8;
+        }
+
+        .timeline {
+            padding: 60px 20px;
+        }
+
+        .timeline h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: #8be9fd;
+        }
+
+        .timeline-items {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #44475a;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-date {
+            flex-shrink: 0;
+            width: 120px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #8be9fd;
+        }
+
+        .timeline-content h3 {
+            color: #50fa7b;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content p {
+            color: #9aa5c4;
+            line-height: 1.8;
+        }
+
+        .get-involved {
+            background: #1a1d28;
+            padding: 60px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .get-involved h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #8be9fd;
+        }
+
+        .get-involved p {
+            font-size: 1.2rem;
+            color: #9aa5c4;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: #8be9fd;
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #50fa7b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 233, 253, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: #44475a;
+            color: #8be9fd;
+        }
+
+        .cta-button.secondary:hover {
+            background: #6272a4;
+        }
+
+        .quote {
+            text-align: center;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #8be9fd;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #8be9fd;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .timeline-date {
+                width: auto;
+            }
+        }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="status-badge">PLANNED 2028</div>
+            <div class="logo">ContainAI Foundation</div>
+            <div class="tagline">Non-Profit Supporting Ethical AI Development</div>
+            <div class="breadcrumb">
+                <a href="https://containai.ai">ContainAI</a> / Foundation
+            </div>
+        </header>
+
+        <section class="hero">
+            <h1>Building a Future Where AI Serves Humanity</h1>
+            <p>
+                The ContainAI Foundation will be a non-profit organization dedicated to supporting
+                ethical AI infrastructure development. Following the Signal model, we will
+                maintain open source projects, fund security audits, advocate for ethical AI standards,
+                and provide grants to aligned developers.
+            </p>
+            <p style="color: #50fa7b; font-weight: 600; margin-top: 20px;">
+                AI should empower users, not exploit them.
+            </p>
+        </section>
+
+        <section class="mission">
+            <h2>Our Mission</h2>
+            <p>
+                To create and maintain ethical AI infrastructure that puts users in control.
+                We believe artificial intelligence should be transparent, consent-bound, and free
+                from surveillance and manipulation — whether the use case is privacy-sensitive or not.
+            </p>
+            <div class="mission-statement">
+                "We're building the infrastructure for AI that respects human autonomy.
+                Memory without surveillance. Intelligence without manipulation."
+            </div>
+        </section>
+
+        <section style="background: #282a36; border-radius: 12px; padding: 60px 40px; margin: 0 0 60px 0; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <h2 style="font-size: 2rem; color: #8be9fd; margin-bottom: 28px;">Why There's No Floor Yet</h2>
+            <p style="font-size: 1.1rem; color: #ccd4ec; line-height: 1.85; margin-bottom: 22px;">
+                No government, regulatory body, or industry group currently enforces meaningful ethical
+                standards for AI products. Companies decide for themselves what data to collect, how long
+                to retain it, whether to use it to train models, and how clearly any of that is disclosed.
+                The only constraint is what they choose to bury in terms-of-service documents that almost
+                no one reads.
+            </p>
+            <p style="font-size: 1.1rem; color: #ccd4ec; line-height: 1.85; margin-bottom: 22px;">
+                This isn't a gap that will close on its own. The financial incentives run in exactly the
+                wrong direction — the business models that generate the most revenue are built on data
+                collection, behavioral profiling, and engagement optimization. Without external standards,
+                those models will dominate.
+            </p>
+            <p style="font-size: 1.1rem; color: #ccd4ec; line-height: 1.85; margin-bottom: 22px;">
+                The ContainAI Foundation's long-term advocacy goal is concrete: establish a baseline
+                certification standard for AI products. Not a comprehensive regulatory framework — just
+                a floor:
+            </p>
+            <ul style="font-size: 1.05rem; color: #ccd4ec; line-height: 1.85; margin-bottom: 22px; padding-left: 28px;">
+                <li style="margin-bottom: 10px;">Does this product collect or retain user conversations?</li>
+                <li style="margin-bottom: 10px;">Is this product safe for use by children, with documented protections for minors?</li>
+                <li style="margin-bottom: 10px;">Is the user's personal data used to train models — and is that opt-in or opt-out?</li>
+                <li style="margin-bottom: 10px;">Is the product's data handling independently auditable?</li>
+            </ul>
+            <p style="font-size: 1.1rem; color: #ccd4ec; line-height: 1.85; margin-bottom: 22px;">
+                A nonprofit foundation offering certification against these standards would give companies
+                a way to demonstrate their commitment publicly — a badge they can display that tells users,
+                clearly and simply, that this product meets a documented ethical standard. This model is
+                well established: ENERGY STAR, Fair Trade, and COPPA compliance seals all work this way.
+                Consumers recognise the badge; its absence is equally informative.
+            </p>
+            <p style="font-size: 1.1rem; color: #ccd4ec; line-height: 1.85; margin-bottom: 0;">
+                Companies that meet the standard can display the badge. Companies that can't — or won't
+                — leave that absence visible to every user who looks. That transparency alone would shift
+                the landscape, creating market pressure for ethical behavior without waiting for legislation
+                that may be decades away. <strong style="color: #f8f8f2;">This is what "ethical AI infrastructure" means in
+                practice: beginning with the most vulnerable, we establish specific, auditable standards that protect people.</strong>
+            </p>
+        </section>
+
+        <section class="pillars">
+            <h2>Foundation Pillars</h2>
+            <div class="pillars-grid">
+                <div class="pillar">
+                    <div class="pillar-icon">🛡️</div>
+                    <h3>Maintain Open Source Projects</h3>
+                    <p>
+                        Support and maintain ethical AI tools like Zynkbot and the ContainAI SDK.
+                        Ensure long-term sustainability through community governance and transparent development.
+                    </p>
+                    <ul>
+                        <li>Zynkbot core maintenance</li>
+                        <li>SDK development and support</li>
+                        <li>Community contributions</li>
+                        <li>Public roadmap and governance</li>
+                    </ul>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">🔒</div>
+                    <h3>Fund Security Audits</h3>
+                    <p>
+                        Regular independent security audits of all Foundation-maintained projects.
+                        Transparency reports and vulnerability disclosure programs.
+                    </p>
+                    <ul>
+                        <li>Annual security audits</li>
+                        <li>Bug bounty programs</li>
+                        <li>Cryptographic review</li>
+                        <li>Privacy compliance verification</li>
+                    </ul>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">📢</div>
+                    <h3>Advocate for Ethical AI</h3>
+                    <p>
+                        Promote standards for consent-based, ethical AI development.
+                        Educate developers, users, and policymakers about responsible AI alternatives.
+                    </p>
+                    <ul>
+                        <li>Policy advocacy</li>
+                        <li>Educational resources</li>
+                        <li>Industry partnerships</li>
+                        <li>Public awareness campaigns</li>
+                    </ul>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">💚</div>
+                    <h3>Grant Programs</h3>
+                    <p>
+                        Fund developers and organizations building ethical AI tools.
+                        Support research into responsible AI architectures and sustainable open source.
+                    </p>
+                    <ul>
+                        <li>Developer grants</li>
+                        <li>Research funding</li>
+                        <li>Educational scholarships</li>
+                        <li>Community projects</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="model">
+            <h2>The Signal Model</h2>
+            <p style="text-align: center; color: #9aa5c4; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                We're following proven examples of sustainable non-profit tech organizations
+                that prioritize user privacy and ethical development.
+            </p>
+            <div class="model-comparison">
+                <div class="model-item">
+                    <h3>Signal Foundation → Signal App</h3>
+                    <p>
+                        Non-profit foundation maintaining the Signal private messenger.
+                        Funded by donations and grants. No ads, no data harvesting.
+                        Demonstrates that ethical tech can be sustainable without exploiting users.
+                    </p>
+                </div>
+
+                <div class="model-item">
+                    <h3>Mozilla Foundation → Firefox</h3>
+                    <p>
+                        Non-profit supporting open web standards and privacy tools.
+                        Maintains Firefox browser and funds privacy research.
+                        Revenue from commercial partnerships supports the mission.
+                    </p>
+                </div>
+
+                <div class="model-item">
+                    <h3>ContainAI Foundation → Zynkbot & SDK</h3>
+                    <p>
+                        Non-profit maintaining Zynkbot and the ContainAI SDK.
+                        Funded by Zynkbot premium features, SDK commercial licensing, donations, and grants.
+                        Revenue reinvested in development, security audits, and community grants.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="model">
+            <h2>How This Is Funded</h2>
+            <p style="text-align: center; color: #9aa5c4; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Zynkbot will remain free. The project sustains itself through optional services and
+                a developer ecosystem — not through data collection or advertising.
+            </p>
+            <div class="model-comparison">
+                <div class="model-item">
+                    <h3>Optional Cloud Memory Backup</h3>
+                    <p>
+                        Zynkbot's memory database lives on your device. An optional encrypted cloud
+                        backup service will be available for a small monthly fee — comparable to what
+                        you'd pay for cloud storage. Useful when you're away from your local network
+                        and need a device to be current, or as protection against device loss. Nothing is
+                        required; this is a convenience service for people who want it.
+                    </p>
+                </div>
+                <div class="model-item">
+                    <h3>Snap-in Ecosystem</h3>
+                    <p>
+                        Snap-ins are purpose-built extensions for specific industries and workflows.
+                        ContainAI will develop and offer snap-ins as a primary revenue stream — tools
+                        for lawyers, medical professionals, tradespeople, educators, and others.
+                        Third-party developers are explicitly welcome to build and sell their own.
+                        The base app remains free; the snap-in marketplace is how the ecosystem
+                        grows and pays for itself. If Zynkbot gains widespread adoption, founding a
+                        company to develop snap-ins full-time is the natural next step.
+                    </p>
+                </div>
+                <div class="model-item">
+                    <h3>SDK Commercial Licensing</h3>
+                    <p>
+                        The ContainAI SDK is free for personal, research, and open-source use under
+                        AGPL. Commercial products built on it require a commercial license. Revenue
+                        from SDK licensing funds Foundation operations — security audits, ongoing
+                        development, and community grants for aligned developers.
+                    </p>
+                </div>
+                <div class="model-item">
+                    <h3>Donations &amp; Grants</h3>
+                    <p>
+                        As with Signal and Mozilla, community donations and mission-aligned grants
+                        provide additional stability. These fund the non-profit work: advocacy,
+                        research, and support for developers building ethical AI tools.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="timeline">
+            <h2>Roadmap to Foundation</h2>
+            <div class="timeline-items">
+                <div class="timeline-item">
+                    <div class="timeline-date">2026</div>
+                    <div class="timeline-content">
+                        <h3>Zynkbot v1.0 Launch</h3>
+                        <p>
+                            Production-ready desktop release. Open source launch on GitHub.
+                            Community building and initial user adoption. Mobile development begins.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2027</div>
+                    <div class="timeline-content">
+                        <h3>SDK & Commercial Licensing</h3>
+                        <p>
+                            ContainAI SDK v1.0 released. Commercial licensing established.
+                            Revenue from SDK licenses and Zynkbot premium features begins funding
+                            Foundation establishment.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2028</div>
+                    <div class="timeline-content">
+                        <h3>Foundation Establishment</h3>
+                        <p>
+                            ContainAI Foundation legally established as 501(c)(3) non-profit.
+                            Governance structure finalized. First security audits commissioned.
+                            Grant program launched.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2029+</div>
+                    <div class="timeline-content">
+                        <h3>Ecosystem Growth</h3>
+                        <p>
+                            Expand grant programs. Support third-party ethical AI projects.
+                            Advocate for ethical AI standards. Build developer community around SDK.
+                            Demonstrate viability of non-surveillance AI business model.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="get-involved">
+            <h2>Get Involved</h2>
+            <p>
+                The Foundation isn't established yet, but you can help build the movement today.
+                Use Zynkbot. Contribute code. Spread the word. Support ethical AI.
+            </p>
+            <div class="cta-buttons">
+                <a href="https://containai.ai/zynkbot" class="cta-button">Try Zynkbot</a>
+                <a href="https://github.com/MSkill1/zynkbot" class="cta-button secondary">Contribute on GitHub</a>
+                <a href="mailto:matt@containai.ai" class="cta-button secondary">Contact Us</a>
+            </div>
+        </section>
+
+        <div class="quote">
+            "Surveillance capitalism is not inevitable. We're building the alternative."
+        </div>
+
+        <footer>
+            <p><strong>ContainAI Foundation</strong> (Planned 2028)</p>
+            <p style="margin-top: 10px;">
+                <a href="https://containai.ai">ContainAI</a> |
+                <a href="https://containai.ai/zynkbot">Zynkbot</a> |
+                <a href="https://containai.ai/sdk">SDK</a> |
+                <a href="https://containai.ai/zynkcluster">ZynkCluster</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="mailto:matt@containai.ai">Contact</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright © 2024-2026 Matthew Skillman / ContainAI<br>
+                Building ethical AI infrastructure
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
