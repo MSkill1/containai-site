@@ -13,7 +13,7 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.recommendationcrafter.com
+          server: box5854.bluehost.com
           username: mattskillman@containai.ai
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /home2/llxlqnmy/public_html/containai_site/
