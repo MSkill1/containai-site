@@ -1,0 +1,23 @@
+name: Deploy to Bluehost
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.recommendationcrafter.com
+          username: mattskillman@containai.ai
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /home2/llxlqnmy/public_html/containai_site/
+          local-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
