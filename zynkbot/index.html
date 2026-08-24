@@ -520,7 +520,7 @@
 </head>
 <body>
     <div style="background: #50fa7b; color: #282a36; text-align: center; padding: 10px 20px; font-weight: 600; font-size: 0.95rem;">
-        v0.9.3 now available — free for Windows, Linux, and Android —
+        v0.9.5-beta1 now available — free for Windows, Linux, and Android —
         <a href="https://github.com/MSkill1/zynkbot/releases/latest" style="color: #282a36; text-decoration: underline;">download here</a>.
     </div>
     <div class="container">
@@ -556,9 +556,9 @@
                     <div style="font-size: 1.6rem; margin-bottom: 6px;">🪟</div>
                     <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 4px;">Windows 10 / 11</div>
                     <div style="font-size: 0.8rem; color: #6272a4; margin-bottom: 14px;">Free — no account required</div>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_x64-setup.exe"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_x64-setup.exe"
                        class="cta-button" style="display: block; margin-bottom: 8px; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .exe</a>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_x64_en-US.msi"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_x64_en-US.msi"
                        class="cta-button secondary" style="display: block; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .msi</a>
                 </div>
 
@@ -566,11 +566,11 @@
                     <div style="font-size: 1.6rem; margin-bottom: 6px;">🐧</div>
                     <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 4px;">Linux</div>
                     <div style="font-size: 0.8rem; color: #6272a4; margin-bottom: 14px;">Ubuntu · Arch · Fedora</div>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_amd64.deb"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_amd64.deb"
                        class="cta-button" style="display: block; margin-bottom: 8px; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .deb</a>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_amd64.AppImage"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_amd64.AppImage"
                        class="cta-button secondary" style="display: block; margin-bottom: 8px; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .AppImage</a>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot-0.9.3-1.x86_64.rpm"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot-0.9.5-beta1-1.x86_64.rpm"
                        class="cta-button secondary" style="display: block; font-size: 0.88rem; padding: 8px 16px;">⬇ Download .rpm</a>
                 </div>
 
@@ -578,7 +578,7 @@
                     <div style="font-size: 1.6rem; margin-bottom: 6px;">📱</div>
                     <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 4px;">Android</div>
                     <div style="font-size: 0.8rem; color: #50fa7b; margin-bottom: 14px;">Beta available</div>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.2.apk" class="cta-button" style="display: block; font-size: 0.85rem; padding: 8px 16px;">⬇ Download APK</a>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1.apk" class="cta-button" style="display: block; font-size: 0.85rem; padding: 8px 16px;">⬇ Download APK</a>
                     <div style="font-size: 0.75rem; color: #6272a4; margin-top: 8px;">Enable "Install unknown apps" in Android settings · iOS planned</div>
                 </div>
             </div>
@@ -1133,11 +1133,11 @@
             <h3>Optional Memory Backup</h3>
             <p>
                 Zynkbot's memory database lives entirely on your device. An optional encrypted cloud
-                backup service is planned — for a small monthly fee comparable to what you'd pay for
-                cloud storage, your memory database can be synced to a secure server. Useful when
-                you're away from your home network and need a device up to date, or as protection
-                against device loss. Nothing about this is required; it's a convenience for people
-                who want it.
+                backup is available now — connect your own Cloudflare R2 or S3 bucket in Settings,
+                and your memory database (including semantic embeddings, so recall works perfectly after
+                reinstall) is backed up with AES-256-GCM encryption using a passphrase only you hold.
+                The backup key never leaves your device. Nothing about this is required; it's a
+                convenience for people who want it — and your own storage means no subscription fee.
             </p>
         </section>
 
@@ -1203,6 +1203,7 @@
                             <li>Your data stays on your device</li>
                             <li>No training on your conversations</li>
                             <li>Works offline (local-first)</li>
+                            <li>Offline voice dictation (Vosk, no internet needed)</li>
                             <li>Transparent memory and reasoning</li>
                             <li>Full control over all data</li>
                             <li>Privacy-first, user-serving design</li>
@@ -1214,7 +1215,7 @@
 
         <!-- QUICK START -->
         <section id="install" class="install-section">
-            <h2>Download Zynkbot v0.9.3</h2>
+            <h2>Download Zynkbot v0.9.5-beta1</h2>
             <p style="text-align: center; color: #ccd4ec; margin-bottom: 30px; font-size: 1.1rem;">
                 No compilation required. A setup wizard downloads all required AI models on first launch.
             </p>
@@ -1224,11 +1225,11 @@
                 <div style="background: #1e2030; border: 1px solid #44475a; border-radius: 12px; padding: 24px; min-width: 200px; text-align: center;">
                     <div style="font-size: 2rem; margin-bottom: 8px;">🪟</div>
                     <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 16px;">Windows</div>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_x64-setup.exe"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_x64-setup.exe"
                        class="cta-button" style="display: block; margin-bottom: 10px; font-size: 0.9rem;">
                         ⬇ Download .exe
                     </a>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_x64_en-US.msi"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_x64_en-US.msi"
                        class="cta-button secondary" style="display: block; font-size: 0.9rem;">
                         ⬇ Download .msi
                     </a>
@@ -1238,18 +1239,29 @@
                 <div style="background: #1e2030; border: 1px solid #44475a; border-radius: 12px; padding: 24px; min-width: 200px; text-align: center;">
                     <div style="font-size: 2rem; margin-bottom: 8px;">🐧</div>
                     <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 16px;">Linux</div>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_amd64.deb"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_amd64.deb"
                        class="cta-button" style="display: block; margin-bottom: 10px; font-size: 0.9rem;">
                         ⬇ Download .deb
                     </a>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot_0.9.3_amd64.AppImage"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1_amd64.AppImage"
                        class="cta-button secondary" style="display: block; margin-bottom: 10px; font-size: 0.9rem;">
                         ⬇ Download .AppImage
                     </a>
-                    <a href="https://github.com/MSkill1/zynkbot/releases/latest/download/Zynkbot-0.9.3-1.x86_64.rpm"
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot-0.9.5-beta1-1.x86_64.rpm"
                        class="cta-button secondary" style="display: block; font-size: 0.9rem;">
                         ⬇ Download .rpm
                     </a>
+                </div>
+
+                <!-- Android -->
+                <div style="background: #1e2030; border: 1px solid #44475a; border-radius: 12px; padding: 24px; min-width: 200px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">🤖</div>
+                    <div style="font-weight: bold; color: #f8f8f2; margin-bottom: 16px;">Android</div>
+                    <a href="https://github.com/MSkill1/zynkbot/releases/download/v0.9.5-beta1/Zynkbot_0.9.5-beta1.apk"
+                       class="cta-button" style="display: block; font-size: 0.9rem;">
+                        ⬇ Download APK
+                    </a>
+                    <div style="font-size: 0.75rem; color: #6272a4; margin-top: 10px;">Enable "Install unknown apps" in Android settings · iOS planned</div>
                 </div>
             </div>
 
@@ -1302,7 +1314,7 @@
             </p>
             <p style="margin-top: 20px; font-size: 0.9rem;">
                 Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
-                Open Beta v0.9.2 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora), Android
+                Open Beta v0.9.5-beta1 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora), Android
             </p>
         </footer>
     </div>
