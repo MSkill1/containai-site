@@ -131,7 +131,7 @@
     armedAt = ctx.currentTime + 1.0;
     const n = clips.length;
     countEl.textContent = n; countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump');
-    if (n >= N) { finish(); return; }
+    if (n >= N) { finish().catch((e) => showErr('Could not prepare the file: ' + (e && e.message || e))); return; }
     // One instruction only, and it is the last one: once the phone faces away the
     // screen cannot be read, so nothing after this asks for anything. The beep counts
     // each one and a double beep says done.
@@ -183,16 +183,51 @@
     return new Blob([buf], { type: 'audio/wav' });
   }
 
-  function fileName() {
+  function baseName() {
     const who = ($('name').value || 'someone').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'someone';
     const d = new Date(), p = (x) => String(x).padStart(2, '0');
-    return `heyzynk_${who}_${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}.wav`;
+    return `heyzynk_${who}_${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`;
+  }
+  function fileName() { return baseName() + '.zip'; }
+
+  // The WAV goes out inside a zip (stored, no compression). A bare .wav handed to a
+  // messaging app is treated as an audio message and re-encoded into a voice format
+  // that cannot be used (2026-10-22, WhatsApp); a zip is a document and travels untouched.
+  function crc32(bytes) {
+    let c, crc = 0xffffffff;
+    for (let i = 0; i < bytes.length; i++) {
+      c = (crc ^ bytes[i]) & 0xff;
+      for (let k = 0; k < 8; k++) c = c & 1 ? (c >>> 1) ^ 0xedb88320 : c >>> 1;
+      crc = (crc >>> 8) ^ c;
+    }
+    return (crc ^ 0xffffffff) >>> 0;
+  }
+  function zipOf(name, data) {
+    const enc = new TextEncoder(), nameBytes = enc.encode(name), crc = crc32(data);
+    const d = new Date();
+    const dosTime = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+    const dosDate = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+    const local = new ArrayBuffer(30 + nameBytes.length), lv = new DataView(local);
+    lv.setUint32(0, 0x04034b50, true); lv.setUint16(4, 20, true); lv.setUint16(6, 0, true); lv.setUint16(8, 0, true);
+    lv.setUint16(10, dosTime, true); lv.setUint16(12, dosDate, true); lv.setUint32(14, crc, true);
+    lv.setUint32(18, data.length, true); lv.setUint32(22, data.length, true); lv.setUint16(26, nameBytes.length, true); lv.setUint16(28, 0, true);
+    new Uint8Array(local, 30).set(nameBytes);
+    const central = new ArrayBuffer(46 + nameBytes.length), cv = new DataView(central);
+    cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true); cv.setUint16(8, 0, true); cv.setUint16(10, 0, true);
+    cv.setUint16(12, dosTime, true); cv.setUint16(14, dosDate, true); cv.setUint32(16, crc, true);
+    cv.setUint32(20, data.length, true); cv.setUint32(24, data.length, true); cv.setUint16(28, nameBytes.length, true);
+    cv.setUint16(30, 0, true); cv.setUint16(32, 0, true); cv.setUint16(34, 0, true); cv.setUint16(36, 0, true); cv.setUint32(38, 0, true); cv.setUint32(42, 0, true);
+    new Uint8Array(central, 46).set(nameBytes);
+    const end = new ArrayBuffer(22), ev = new DataView(end);
+    ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true); ev.setUint16(6, 0, true); ev.setUint16(8, 1, true); ev.setUint16(10, 1, true);
+    ev.setUint32(12, central.byteLength, true); ev.setUint32(16, local.byteLength + data.length, true); ev.setUint16(20, 0, true);
+    return new Blob([local, data, central, end], { type: 'application/zip' });
   }
 
-  function finish() {
+  async function finish() {
     beep(); setTimeout(beep, 260);
     setTimeout(stopAudio, 600);
-    blob = wav();
+    blob = zipOf(baseName() + '.wav', new Uint8Array(await wav().arrayBuffer()));
     say('Done. Thank you. Tap Send and pick how to send it to Matt.', false);
     sendBtn.hidden = false;
     const a = $('save'); a.href = URL.createObjectURL(blob); a.download = fileName(); $('savep').hidden = false;
@@ -200,7 +235,7 @@
 
   async function send() {
     if (!blob) return;
-    const file = new File([blob], fileName(), { type: 'audio/wav' });
+    const file = new File([blob], fileName(), { type: 'application/zip' });
     try {
       if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Hey Zynk voice sample' }); say('Sent. Thank you.'); return; }
     } catch (e) { if (e && e.name === 'AbortError') return; }
