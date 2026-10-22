@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hey Zynk Voice Sample</title>
+<!-- A one-page recorder for collecting other people's "Hey Zynk" clips as verifier
+     negatives (labs/wake_verifier, 2026-10-22). Counts utterances by sound level, keeps
+     the last 3 s of each as a 16 kHz clip, and at twenty offers one WAV (clips with 1 s
+     gaps) through the phone's share sheet. Nothing is uploaded by this page. -->
+<style>
+  /* Layout: one column, the count is the page. */
+  :root {
+    --bg: #f6f4ef; --fg: #1d2330; --muted: #5d6578; --line: #d9d5cc; --accent: #0f766e; --accent-fg: #ffffff; --warn: #b45309;
+    --display: "Avenir Next", "Segoe UI", system-ui, sans-serif; --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #171a21; --fg: #eef0f4; --muted: #a2a9b8; --line: #343a47; --accent: #2dd4bf; --accent-fg: #0b1a18; --warn: #fbbf24; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg: #171a21; --fg: #eef0f4; --muted: #a2a9b8; --line: #343a47; --accent: #2dd4bf; --accent-fg: #0b1a18; --warn: #fbbf24; color-scheme: dark; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.5 var(--body);
+         padding-block: max(20px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-bottom, 0px));
+         padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+  main { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+  h1 { font: 600 1.6rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  .lead { color: var(--muted); }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 0.95rem; color: var(--muted); }
+  input { font: inherit; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  input:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .counter { display: flex; align-items: baseline; justify-content: center; gap: 10px; padding: 18px 0 6px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .counter .n { font: 600 5.5rem/1 var(--display); font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+  .counter .of { color: var(--muted); font-size: 1.1rem; }
+  #status { min-height: 3em; font-size: 1.05rem; }
+  #status.live { color: var(--accent); }
+  .tips { color: var(--muted); font-size: 0.95rem; border-left: 3px solid var(--line); padding-left: 12px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+  button { font: 600 1.05rem var(--body); padding: 14px 22px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-fg); cursor: pointer; flex: 1 1 140px; }
+  button.quiet { background: transparent; color: var(--fg); border-color: var(--line); }
+  .err { color: var(--warn); font-size: 0.95rem; }
+  a.save { color: var(--accent); }
+  @media (prefers-reduced-motion: no-preference) { .counter .n.bump { animation: bump 220ms ease-out; } @keyframes bump { from { transform: scale(1.12); } to { transform: none; } } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Help teach Zynkbot to know who is talking</h1>
+  <p class="lead">Say “Hey Zynk” twenty times. It takes about a minute. Nothing leaves your phone until you tap Send.</p>
+
+  <label>Your first name
+    <input id="name" autocomplete="given-name" placeholder="So Matt knows whose voice this is">
+  </label>
+
+  <div class="counter"><span class="n" id="count">0</span><span class="of">of 20</span></div>
+
+  <p id="status">Tap Start, then say “Hey Zynk”. Wait for the beep, then say it again.</p>
+
+  <p class="tips">Hold the phone the way you usually would. Quiet room, no TV. The page will tell you when to turn the phone away from you for a few.</p>
+
+  <div class="buttons">
+    <button id="start">Start</button>
+    <button id="send" hidden>Send</button>
+    <button id="reset" class="quiet" hidden>Start over</button>
+  </div>
+  <p id="err" class="err" hidden></p>
+  <p id="savep" hidden>If Send does nothing on your phone: <a class="save" id="save" download>save the file</a>, then send it to Matt any way you like.</p>
+</main>
+
+<script>
+(() => {
+  const N = 20, CLIP_S = 3.0, GAP_S = 1.0, OUT_SR = 16000;
+  const $ = (id) => document.getElementById(id);
+  const countEl = $('count'), statusEl = $('status'), startBtn = $('start'), sendBtn = $('send'), resetBtn = $('reset'), errEl = $('err');
+  let ctx = null, stream = null, proc = null, src = null, sr = 48000;
+  let ring = null, ringPos = 0, ringFilled = 0;
+  let floor = 0.004, speaking = false, speechStart = 0, quietSince = 0, armedAt = 0, hot = 0;
+  let clips = [], wakeLock = null, blob = null;
+
+  const say = (t, live) => { statusEl.textContent = t; statusEl.classList.toggle('live', !!live); };
+  const showErr = (t) => { errEl.textContent = t; errEl.hidden = !t; };
+
+  function beep() {
+    try {
+      const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime;
+      o.frequency.value = 880; g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+      o.connect(g).connect(ctx.destination); o.start(t); o.stop(t + 0.2);
+    } catch (_) {}
+  }
+
+  function resample(x, from, to) {
+    const n = Math.round(x.length * to / from), y = new Float32Array(n), r = from / to;
+    for (let i = 0; i < n; i++) { const p = i * r, j = Math.floor(p), f = p - j; const a = x[j] || 0, b = j + 1 < x.length ? x[j + 1] : a; y[i] = a * (1 - f) + b * f; }
+    return y;
+  }
+
+  /** The last CLIP_S seconds in the ring, oldest first. */
+  function lastSeconds(s) {
+    const n = Math.min(Math.round(sr * s), ringFilled), out = new Float32Array(n);
+    let p = (ringPos - n + ring.length) % ring.length;
+    for (let i = 0; i < n; i++) { out[i] = ring[p]; p = (p + 1) % ring.length; }
+    return out;
+  }
+
+  function onAudio(e) {
+    const inp = e.inputBuffer.getChannelData(0);
+    e.outputBuffer.getChannelData(0).fill(0);
+    for (let i = 0; i < inp.length; i++) { ring[ringPos] = inp[i]; ringPos = (ringPos + 1) % ring.length; }
+    ringFilled = Math.min(ringFilled + inp.length, ring.length);
+    let s = 0; for (let i = 0; i < inp.length; i++) s += inp[i] * inp[i];
+    const rms = Math.sqrt(s / inp.length), t = ctx.currentTime;
+    if (t < armedAt) return;                        // settle after Start, and after each count
+    const thr = Math.max(floor * 4, 0.01);
+    if (!speaking) {
+      floor = rms < floor ? rms : floor * 0.98 + rms * 0.02;   // fast down, slow up
+      if (rms > thr) { if (++hot >= 2) { speaking = true; speechStart = t; quietSince = 0; } } else hot = 0;
+      return;
+    }
+    if (rms < thr * 0.6) { if (!quietSince) quietSince = t; } else quietSince = 0;
+    if (quietSince && t - quietSince > 0.4) {
+      const dur = quietSince - speechStart;
+      speaking = false; hot = 0;
+      if (dur >= 0.25 && dur <= 2.5) accept();
+      else armedAt = t + 0.3;
+    } else if (t - speechStart > 4) { speaking = false; hot = 0; armedAt = t + 0.5; }
+  }
+
+  function accept() {
+    clips.push(resample(lastSeconds(CLIP_S), sr, OUT_SR));
+    beep();
+    armedAt = ctx.currentTime + 1.0;
+    const n = clips.length;
+    countEl.textContent = n; countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump');
+    if (n >= N) { finish(); return; }
+    if (n === 8) say('Good. Now turn the phone to face away from you for the next few.', true);
+    else if (n === 14) say('Now hold it out at arm’s length, or set it down and lean back.', true);
+    else if (n === 18) say('Two more, however you like.', true);
+    else say('Got it. Again.', true);
+  }
+
+  async function start() {
+    showErr('');
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } });
+    } catch (_) { showErr('The microphone was not allowed. Reload the page, tap Start, and choose Allow.'); return; }
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      await ctx.resume();
+      sr = ctx.sampleRate;
+      ring = new Float32Array(Math.round(sr * 4)); ringPos = 0; ringFilled = 0;
+      src = ctx.createMediaStreamSource(stream);
+      proc = ctx.createScriptProcessor(2048, 1, 1);
+      proc.onaudioprocess = onAudio;
+      src.connect(proc); proc.connect(ctx.destination);
+      armedAt = ctx.currentTime + 0.8; floor = 0.004; speaking = false; hot = 0;
+    } catch (e) { showErr('This browser could not open the microphone: ' + (e && e.message || e)); return; }
+    try { wakeLock = await navigator.wakeLock?.request('screen'); } catch (_) {}
+    startBtn.hidden = true; resetBtn.hidden = false;
+    say('Listening. Say “Hey Zynk”.', true);
+  }
+
+  function stopAudio() {
+    try { proc && proc.disconnect(); src && src.disconnect(); } catch (_) {}
+    try { stream && stream.getTracks().forEach((t) => t.stop()); } catch (_) {}
+    try { wakeLock && wakeLock.release(); } catch (_) {}
+    proc = src = stream = wakeLock = null;
+  }
+
+  function wav() {
+    const clipN = Math.round(CLIP_S * OUT_SR), gapN = Math.round(GAP_S * OUT_SR), total = clips.length * (clipN + gapN);
+    const buf = new ArrayBuffer(44 + total * 2), v = new DataView(buf);
+    const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + total * 2, true); str(8, 'WAVE'); str(12, 'fmt '); v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, OUT_SR, true); v.setUint32(28, OUT_SR * 2, true);
+    v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, total * 2, true);
+    let o = 44;
+    for (const c of clips) {
+      for (let i = 0; i < clipN; i++) { const x = i < clipN - c.length ? 0 : c[i - (clipN - c.length)]; const s = Math.max(-1, Math.min(1, x || 0)); v.setInt16(o, s < 0 ? s * 32768 : s * 32767, true); o += 2; }
+      o += gapN * 2;   // the gap stays zero
+    }
+    return new Blob([buf], { type: 'audio/wav' });
+  }
+
+  function fileName() {
+    const who = ($('name').value || 'someone').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'someone';
+    const d = new Date(), p = (x) => String(x).padStart(2, '0');
+    return `heyzynk_${who}_${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}.wav`;
+  }
+
+  function finish() {
+    stopAudio();
+    blob = wav();
+    say('Done. Thank you. Tap Send and pick how to send it to Matt.', false);
+    sendBtn.hidden = false;
+    const a = $('save'); a.href = URL.createObjectURL(blob); a.download = fileName(); $('savep').hidden = false;
+  }
+
+  async function send() {
+    if (!blob) return;
+    const file = new File([blob], fileName(), { type: 'audio/wav' });
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Hey Zynk voice sample' }); say('Sent. Thank you.'); return; }
+    } catch (e) { if (e && e.name === 'AbortError') return; }
+    showErr('Sharing is not available in this browser. Use “save the file” below and send it to Matt.');
+  }
+
+  function reset() {
+    stopAudio(); clips = []; blob = null; countEl.textContent = '0';
+    sendBtn.hidden = true; resetBtn.hidden = true; startBtn.hidden = false; $('savep').hidden = true; showErr('');
+    say('Tap Start, then say “Hey Zynk”. Wait for the beep, then say it again.');
+  }
+
+  startBtn.addEventListener('click', start);
+  sendBtn.addEventListener('click', send);
+  resetBtn.addEventListener('click', reset);
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) showErr('This browser cannot record. Try Chrome or Safari.');
+})();
+</script>
+</body>
+</html>
