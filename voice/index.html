@@ -55,7 +55,7 @@
 
   <p id="status">Tap Start, then say “Hey Zynk”. Wait for the beep, then say it again.</p>
 
-  <p class="tips">Hold the phone the way you usually would. Quiet room, no TV. The page will tell you when to turn the phone away from you for a few.</p>
+  <p class="tips">Hold the phone the way you usually would. Quiet room, no TV. For the last five the page will ask you to turn the phone to face away from you; a double beep means you are done.</p>
 
   <div class="buttons">
     <button id="start">Start</button>
@@ -132,9 +132,11 @@
     const n = clips.length;
     countEl.textContent = n; countEl.classList.remove('bump'); void countEl.offsetWidth; countEl.classList.add('bump');
     if (n >= N) { finish(); return; }
-    if (n === 8) say('Good. Now turn the phone to face away from you for the next few.', true);
-    else if (n === 14) say('Now hold it out at arm’s length, or set it down and lean back.', true);
-    else if (n === 18) say('Two more, however you like.', true);
+    // One instruction only, and it is the last one: once the phone faces away the
+    // screen cannot be read, so nothing after this asks for anything. The beep counts
+    // each one and a double beep says done.
+    if (n === 15) say('Last five: turn the phone to face away from you and keep going. A double beep means done.', true);
+    else if (n > 15) say('Keep going.', true);
     else say('Got it. Again.', true);
   }
 
@@ -188,7 +190,8 @@
   }
 
   function finish() {
-    stopAudio();
+    beep(); setTimeout(beep, 260);
+    setTimeout(stopAudio, 600);
     blob = wav();
     say('Done. Thank you. Tap Send and pick how to send it to Matt.', false);
     sendBtn.hidden = false;
