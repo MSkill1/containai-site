@@ -271,7 +271,7 @@
                 <a href="../">ContainAI</a> / <a href="../zynkbot/">Zynkbot</a> / ZynkCluster
             </div>
             <div class="logo">ZynkCluster</div>
-            <div class="status-badge">Ongoing Research &amp; Development</div>
+            <div class="status-badge">Research &amp; Development · first measurements November 2026</div>
             <div class="tagline">Distributed AI inference across consumer devices — no cloud, no datacenter</div>
         </header>
     </div>
@@ -283,6 +283,7 @@
         <a href="#routing">Expert Routing</a><span class="sep"> · </span>
         <a href="#comparison">Comparison</a><span class="sep"> · </span>
         <a href="#performance">Performance</a><span class="sep"> · </span>
+        <a href="measurements/" style="color:#50fa7b">Measurements</a><span class="sep"> · </span>
         <a href="#roadmap">Roadmap</a><span class="sep"> · </span>
         <a href="#questions">Open Questions</a><span class="sep"> · </span>
         <a href="#research">Research</a>
@@ -291,13 +292,18 @@
     <section class="hero">
         <h2>Run Models Too Large for Any Single Device</h2>
         <p>
-            Most large AI models are constrained by how much VRAM a single machine has.
-            A model like Mixtral 8x22B requires roughly 140GB of VRAM — more than any
-            single consumer GPU can hold. ZynkCluster proposes distributing that model
-            across multiple devices on your local network, using each machine's GPU to
-            run a different part of the model simultaneously. Models that are simply
-            out of reach on a single consumer machine become accessible across hardware
-            you already own.
+            The best open models are too large for any one home computer to hold. ZynkCluster
+            splits such a model across several ordinary machines on your local network, so that
+            together they can hold what none of them can alone. The constraint is memory, not
+            speed: the large open models are mixtures of experts that read only a small slice of
+            themselves for each word, so a handful of machines with plenty of ordinary RAM can run
+            them at a usable pace, and graphics cards add speed rather than capability.
+        </p>
+        <p>
+            <strong>First measurements, November 2026:</strong> with no custom code, a 63 GB model ran
+            split across a desktop and a laptop on a home network, at about five words per second.
+            The numbers, the method and the limits are on the
+            <a href="measurements/" style="color:#50fa7b">measurements page</a>.
         </p>
         <p>
             No cloud. No subscription. No data leaving your network.
@@ -647,11 +653,13 @@ If router had selected Expert 2 and Expert 3 (both on Device A):
     <section id="performance" class="content-section">
         <h2>Performance Projections <span style="font-size: 0.55em; color: #6272a4; font-weight: 400; font-style: italic;">Theoretical Estimates</span></h2>
         <p>
-            The numbers below are theoretical estimates extrapolated from single-device benchmarks
-            and known network overhead for hidden state tensor transfers. <strong>These have not been
-            measured on a live cluster.</strong> They represent what the architecture should achieve
-            if WiFi bandwidth and latency are within acceptable ranges — which is itself an open
-            question. See the Developer Notes section below.
+            The two cards below are theoretical estimates for the expert-parallel design and
+            <strong>have not been measured</strong>. What <em>has</em> been measured is the simpler
+            layer split that llama.cpp already provides: see the third card and the
+            <a href="measurements/" style="color:#8be9fd">measurements page</a>. Two of those results
+            bear directly on the estimates here: over WiFi the per-word network cost was large enough
+            to dominate, and over a direct cable it all but vanished, so the cluster has to be wired;
+            and reading a long prompt, not producing the answer, is the slow part on a weak node.
         </p>
 
         <div class="stat-grid">
@@ -668,6 +676,13 @@ If router had selected Expert 2 and Expert 3 (both on Device A):
                 <p>Tokens/sec: <span class="highlight">~30–35</span> (estimated 75–87% of single device)</p>
                 <p>First token latency: <span class="highlight">~75ms</span> (estimated +25ms network)</p>
                 <p>Graceful degradation if one device drops</p>
+            </div>
+            <div class="stat-card">
+                <h4>2-Device Layer Split (direct cable) — measured, Nov 2026</h4>
+                <p>Model: gpt-oss-120b (117B params, 5.1B active), 63 GB — too large for either machine alone</p>
+                <p>Words/sec: <span class="highlight">~5</span> (desktop 62 GB RAM + 16 GB-card-sized GPU share, laptop 16 GB RAM)</p>
+                <p>First word: <span class="highlight">48 s</span> for a short prompt; a repeated context is cached and costs nothing</p>
+                <p>Same split over WiFi: roughly twice the per-word cost</p>
             </div>
         </div>
 
@@ -686,16 +701,17 @@ If router had selected Expert 2 and Expert 3 (both on Device A):
         <div class="content-inner">
             <h2>Status &amp; Roadmap</h2>
             <p>
-                ZynkCluster is theoretically sound and grounded in published research on Mixture of
-                Experts architectures. The architecture has been reviewed and validated in principle.
-                Development is ongoing; full implementation will proceed as other priorities —
-                including Android support — are completed.
+                ZynkCluster is grounded in published research on Mixture of Experts architectures,
+                and its first milestone has now been measured on two home machines. The current plan,
+                which sizes the cluster in ordinary RAM on used office PCs rather than in graphics-card
+                memory, is in the repository under <code style="color: #8be9fd;">labs/moe_poc/</code>.
+                Development continues as other priorities, including Android support, are completed.
             </p>
 
             <ul class="roadmap-list">
                 <li>
                     <span class="phase">Phase 1</span>
-                    <span>Proof of concept — 2-device GPU cluster, basic expert routing, latency measurement. <strong>In progress.</strong></span>
+                    <span>Proof of concept — two machines, a model neither can hold alone, costs measured. <strong>Done November 2026</strong> with llama.cpp's layer split (<a href="measurements/" style="color:#8be9fd">measurements</a>). Expert routing remains Phase 2–3 work.</span>
                 </li>
                 <li>
                     <span class="phase">Phase 2</span>

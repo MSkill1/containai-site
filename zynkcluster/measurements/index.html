@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ZynkCluster first measurements: a 63 GB open model running across a desktop and a laptop on a home network with llama.cpp's RPC mode. Numbers, method, and what they do not show.">
+    <meta name="keywords" content="ZynkCluster, distributed inference, llama.cpp RPC, gpt-oss-120b, local AI, home cluster, measurements, ContainAI">
+    <meta name="author" content="Matthew Skillman">
+    <title>ZynkCluster — First Measurements | ContainAI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #282a36 0%, #1a1d28 100%);
+            color: #f8f8f2;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        header { padding: 40px 20px; border-bottom: 1px solid #44475a; }
+
+        .breadcrumb { font-size: 0.9rem; color: #6272a4; margin-bottom: 20px; }
+        .breadcrumb a { color: #8be9fd; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8be9fd 0%, #50fa7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            background: #44475a;
+            color: #8be9fd;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border: 1px solid #6272a4;
+        }
+
+        .tagline { font-size: 1.2rem; color: #ccd4ec; margin-top: 8px; }
+
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero h2 { font-size: 2rem; color: #f8f8f2; margin-bottom: 20px; }
+        .hero p { font-size: 1.15rem; color: #ccd4ec; margin-bottom: 16px; line-height: 1.85; }
+
+        .cta-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 36px;
+            background: #8be9fd;
+            color: #282a36;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover { background: #50fa7b; transform: translateY(-2px); }
+        .cta-button.secondary { background: #44475a; color: #8be9fd; }
+        .cta-button.secondary:hover { background: #6272a4; }
+
+        .section-divider { border: none; border-top: 1px solid #44475a; margin: 0; }
+
+        .content-section {
+            padding: 60px 20px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .content-section h2 { font-size: 1.9rem; color: #8be9fd; margin-bottom: 24px; }
+        .content-section h3 { font-size: 1.3rem; color: #50fa7b; margin-top: 32px; margin-bottom: 14px; }
+        .content-section p { font-size: 1.05rem; color: #ccd4ec; margin-bottom: 20px; line-height: 1.85; }
+        .content-section strong { color: #f8f8f2; }
+
+        .section-dark {
+            background: #1a1d28;
+            padding: 60px 20px;
+        }
+
+        .section-dark .content-inner { max-width: 860px; margin: 0 auto; }
+        .section-dark h2 { font-size: 1.9rem; color: #8be9fd; margin-bottom: 24px; }
+        .section-dark h3 { font-size: 1.3rem; color: #50fa7b; margin-top: 32px; margin-bottom: 14px; }
+        .section-dark p { font-size: 1.05rem; color: #ccd4ec; margin-bottom: 20px; line-height: 1.85; }
+        .section-dark strong { color: #f8f8f2; }
+
+        .diagram-block {
+            background: #1a1d28;
+            border-left: 4px solid #8be9fd;
+            border-radius: 0 8px 8px 0;
+            padding: 24px 28px;
+            margin: 28px 0;
+            overflow-x: auto;
+        }
+
+        .diagram-block pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #50fa7b;
+            line-height: 1.7;
+            white-space: pre;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th {
+            background: #44475a;
+            color: #8be9fd;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #44475a;
+            color: #ccd4ec;
+            vertical-align: top;
+        }
+
+        .comparison-table tr:hover td { background: #2d2f40; }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 28px 0;
+        }
+
+        .stat-card {
+            background: #44475a;
+            border-radius: 10px;
+            padding: 22px;
+            border-left: 4px solid #8be9fd;
+        }
+
+        .stat-card:nth-child(2) { border-left-color: #50fa7b; }
+
+        .stat-card h4 { color: #f8f8f2; margin-bottom: 12px; font-size: 1rem; }
+        .stat-card p { color: #9aa5c4; font-size: 0.9rem; margin-bottom: 6px; line-height: 1.6; }
+        .stat-card .highlight { color: #50fa7b; font-weight: 600; }
+
+        .roadmap-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .roadmap-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #44475a;
+            color: #ccd4ec;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .roadmap-list li:last-child { border-bottom: none; }
+
+        .roadmap-list .phase {
+            color: #8be9fd;
+            font-weight: 600;
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+
+        .pull-quote {
+            background: #1a1d28;
+            border-left: 4px solid #50fa7b;
+            padding: 22px 26px;
+            border-radius: 0 8px 8px 0;
+            margin: 32px 0;
+        }
+
+        .pull-quote p {
+            font-size: 1.1rem;
+            color: #f8f8f2;
+            font-style: italic;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #44475a;
+            color: #6272a4;
+            margin-top: 60px;
+        }
+
+        footer a { color: #8be9fd; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Section nav */
+        .section-nav {
+            background: #1a1d28;
+            border-top: 1px solid #44475a;
+            border-bottom: 1px solid #44475a;
+            padding: 14px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .section-nav a {
+            color: #8be9fd;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0 12px;
+            opacity: 0.75;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .section-nav a:hover { opacity: 1; }
+        .section-nav .sep { color: #44475a; }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2rem; }
+            .hero h2 { font-size: 1.5rem; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.85rem; }
+            .comparison-table th, .comparison-table td { padding: 10px 10px; }
+            .diagram-block pre { font-size: 0.75rem; }
+            .section-nav { overflow-x: auto; white-space: nowrap; text-align: left; padding: 12px 16px; }
+        }
+    
+        .meas-table { width: 100%; border-collapse: collapse; margin: 18px 0 26px; font-size: 0.95rem; }
+        .meas-table th, .meas-table td { padding: 9px 10px; border-bottom: 1px solid #44475a; text-align: left; vertical-align: top; }
+        .meas-table th { color: #8be9fd; font-weight: 600; }
+        .meas-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .meas-table tr:hover td { background: rgba(255,255,255,0.03); }
+        .note { color: #bd93f9; font-size: 0.92rem; }
+        .caveat-list li { margin: 8px 0 8px 18px; }
+        code { background: #21222c; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+        @media (max-width: 700px) { .meas-table { font-size: 0.85rem; } .meas-table th, .meas-table td { padding: 7px 6px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="breadcrumb">
+                <a href="../../">ContainAI</a> / <a href="../../zynkbot/">Zynkbot</a> / <a href="../">ZynkCluster</a> / Measurements
+            </div>
+            <div class="logo">ZynkCluster: First Measurements</div>
+            <div class="status-badge">Technical note · 29 October to 2 November 2026</div>
+            <div class="tagline">What happened when a 63 GB model was split across a desktop and a laptop on a home network</div>
+        </header>
+    </div>
+
+    <nav class="section-nav">
+        <a href="#summary">Summary</a><span class="sep"> · </span>
+        <a href="#setup">Setup</a><span class="sep"> · </span>
+        <a href="#wifi-vs-wire">WiFi vs wire</a><span class="sep"> · </span>
+        <a href="#capacity">The 63 GB model</a><span class="sep"> · </span>
+        <a href="#prefill">Prompt reading</a><span class="sep"> · </span>
+        <a href="#not-shown">What this does not show</a><span class="sep"> · </span>
+        <a href="#next">What's next</a>
+    </nav>
+
+    <section class="hero" id="summary">
+        <h2>Summary</h2>
+        <p>
+            Between 29 October and 2 November 2026 we ran the simplest possible version of ZynkCluster:
+            no custom code, just <a href="https://github.com/ggml-org/llama.cpp/tree/master/tools/rpc" style="color:#8be9fd">llama.cpp's RPC mode</a>,
+            which lets one computer hand some of a model's layers to another computer over the network.
+            The two machines were a desktop with 62 GB of memory and an RTX 3090, and a laptop with 16 GB of memory and no usable graphics card.
+        </p>
+        <p>
+            Three results. First, a 63 GB model (gpt-oss-120b) answered questions while split across the two machines,
+            with the desktop's graphics card deliberately limited to the share a 16 GB card would hold. Neither machine could
+            have run it alone. Decode speed was about five words per second. Second, over WiFi the network dominated the cost;
+            over a direct cable it all but disappeared. Third, the remaining cost is reading the prompt, not writing the answer,
+            and llama.cpp's built-in prompt cache removes that cost for a repeated context with no new code.
+        </p>
+        <p>
+            This is a measurement note, not a product announcement. Each configuration was run once, on one pair of machines.
+            The section <a href="#not-shown" style="color:#8be9fd">What this does not show</a> is part of the result.
+        </p>
+        <div class="cta-section">
+            <a href="https://github.com/MSkill1/zynkbot/blob/local-model/labs/moe_poc/ZYNKCLUSTER_RAM_FIRST_PLAN.md" class="cta-button">The plan these tests belong to</a>
+            <a href="../" class="cta-button secondary">Back to ZynkCluster</a>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <div id="setup" class="section-dark">
+        <div class="content-inner">
+            <h2>Setup</h2>
+            <table class="meas-table">
+                <tr><th></th><th>Desktop (main host)</th><th>Laptop (second node)</th></tr>
+                <tr><td>CPU</td><td>Intel i9-10900F, 10 cores</td><td>Intel i7-1255U, 2 performance + 8 efficiency cores</td></tr>
+                <tr><td>Memory</td><td>62 GB DDR4, reads at about 45 GB/s</td><td>16 GB, reads at about 15 GB/s</td></tr>
+                <tr><td>Graphics card</td><td>RTX 3090, 24 GB (limited to 8 layers in the 120b test, the share a 16 GB card holds)</td><td>none</td></tr>
+                <tr><td>Operating system</td><td>Linux Mint 22.3</td><td>Ubuntu 24.04</td></tr>
+                <tr><td>Software</td><td colspan="2">llama.cpp 0.8.0, commit 8642541, built with the RPC backend on both machines. The laptop runs <code>ggml-rpc-server</code>; the desktop runs the model and sends it some layers.</td></tr>
+                <tr><td>Models</td><td colspan="2">gpt-oss-20b (12.1 GB, 24 layers) for most runs; gpt-oss-120b (63.4 GB, 36 layers) for the capacity test. Both are mixture-of-experts models in their native 4-bit format.</td></tr>
+                <tr><td>Links tested</td><td colspan="2">Home WiFi through one access point (139 Mbit/s, 4.2 ms round trip on a good day); then a direct Ethernet cable through a $26 USB adapter on the laptop (2.25 Gbit/s, 0.21 ms round trip).</td></tr>
+                <tr><td>Prompt</td><td colspan="2">The same 117-token prompt and 128-token answer in every timed run, so runs are comparable. A 3,455-token prompt for the long-context tests.</td></tr>
+            </table>
+            <p class="note">"Prefill" is the time to read the prompt before the first word of the answer. "Decode" is the time per word of the answer. They are bound by different things and are always reported separately.</p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <section class="content-section" id="wifi-vs-wire">
+        <h2>WiFi vs wire: the same split, two links</h2>
+        <p>gpt-oss-20b, with six of its 24 layers on the laptop. The desktop-alone row is the reference: the same model with nothing sent anywhere.</p>
+        <table class="meas-table">
+            <tr><th>Configuration</th><th class="num">Decode, WiFi</th><th class="num">Decode, cable</th><th class="num">Prefill, WiFi</th><th class="num">Prefill, cable</th></tr>
+            <tr><td>Desktop CPU alone, all 24 layers</td><td class="num">65 ms/word</td><td class="num">66 ms/word</td><td class="num">1.4 s</td><td class="num">1.4 s</td></tr>
+            <tr><td>Desktop CPU 18 layers + laptop 6 layers, default placement</td><td class="num">222 ms/word</td><td class="num">127 ms/word</td><td class="num">3.8 s</td><td class="num">3.0 s</td></tr>
+            <tr><td>Same, with the output layer kept on the desktop</td><td class="num">141 ms/word</td><td class="num">106 ms/word</td><td class="num">4.9 s</td><td class="num">3.1 s</td></tr>
+            <tr><td>Desktop graphics card 17 layers + laptop 7 layers</td><td class="num">81 ms/word</td><td class="num">57 ms/word</td><td class="num">3.5 s</td><td class="num">3.3 s</td></tr>
+        </table>
+        <p>
+            <strong>Why WiFi was slow.</strong> Not bandwidth. The RPC protocol exchanges about 13 small messages per word in steady state,
+            and each one waits for a full round trip. At WiFi's 4 ms that is most of the cost; at the cable's 0.2 ms it is a few milliseconds.
+            The wired numbers were predicted from the message count and the measured round trip before the wired runs were made, and the
+            predictions held to within a few milliseconds.
+        </p>
+        <p>
+            <strong>A placement detail worth 80 ms.</strong> By default llama.cpp puts the model's output layer on the last device, which in this
+            arrangement is the laptop, and then pulls 785 KB of word scores back across the network every word. One flag
+            (<code>-ot 'output\.weight=CPU'</code>) keeps that layer on the desktop. Over WiFi that was worth 80 ms per word; over the cable, 21 ms.
+        </p>
+        <p>
+            <strong>How much a weak node should hold.</strong> A sweep from 2 to 12 laptop layers on the wire showed each layer moved to the laptop
+            adds about 5.6 ms per word to decode, with no measurable fixed cost per hop. On prefill the laptop was about seven times slower per layer
+            than the desktop. The lesson is to give a weak node as few layers as possible, which is configuration, not code.
+        </p>
+    </section>
+
+    <hr class="section-divider">
+
+    <div id="capacity" class="section-dark">
+        <div class="content-inner">
+            <h2>The 63 GB model across both machines</h2>
+            <p>
+                This is the test the whole idea rests on: a model larger than either machine's memory. gpt-oss-120b is 63.4 GB with 36 layers.
+                The desktop has 62 GB of memory. The graphics card was limited to 8 layers (about 14 GB), because 16 GB is what a current
+                mid-range card holds and a 24 GB card is not representative. The laptop took 6 layers over the cable; the desktop's memory held the other 22.
+            </p>
+            <table class="meas-table">
+                <tr><th>Measure</th><th class="num">Result</th></tr>
+                <tr><td>Model load</td><td class="num">218 s (63 GB read from disk; 10 GB of layers sent to the laptop and cached there)</td></tr>
+                <tr><td>Prefill, 117-token prompt</td><td class="num">48 s</td></tr>
+                <tr><td>Decode</td><td class="num">196 ms/word, 5.1 words/s</td></tr>
+                <tr><td>Answer</td><td class="num">coherent</td></tr>
+            </table>
+            <p>
+                <strong>The desktop alone could not do it.</strong> Attempting the same model on the desktop without the laptop, about 48 GB of model in
+                about 42 GB of free memory, froze the machine; it had to be power-cycled. That is the control result, and it also taught us the
+                practical rule for a node: count about 50 GB of model per 64 GB of memory, not 64, because the operating system and the model's
+                working buffers need the rest.
+            </p>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <section class="content-section" id="prefill">
+        <h2>Prompt reading is the real cost, and it can be cached</h2>
+        <p>
+            Every split made the answer start later, even when the 3090 held most of the model, because the laptop's share of reading the prompt runs on
+            the laptop's slower processor while the desktop waits. With a 3,455-token prompt, the kind of context a household assistant would send
+            along with a question:
+        </p>
+        <table class="meas-table">
+            <tr><th>Configuration</th><th class="num">Prefill, first time</th><th class="num">Prefill, same context again</th><th class="num">Decode</th></tr>
+            <tr><td>Desktop CPU alone</td><td class="num">42 s</td><td class="num">not tested</td><td class="num">78 ms/word</td></tr>
+            <tr><td>Desktop 3090 alone</td><td class="num">0.6 s</td><td class="num">0.0 s</td><td class="num">5 ms/word</td></tr>
+            <tr><td>Desktop CPU 18 + laptop 6</td><td class="num">88 s</td><td class="num">not tested</td><td class="num">137 ms/word</td></tr>
+            <tr><td>Desktop 3090 17 + laptop 7</td><td class="num">85 s</td><td class="num">0.0 s</td><td class="num">89 ms/word</td></tr>
+        </table>
+        <p>
+            The second-time column is llama.cpp's prompt cache (<code>--prompt-cache</code>): the processed prompt is saved to a file after the first run and
+            loaded on the next. It worked over the split exactly as it does on one machine. For an assistant whose system prompt and memory context change
+            slowly, the 85 seconds is paid when the context changes, not on every question. No new code was needed for this.
+        </p>
+    </section>
+
+    <hr class="section-divider">
+
+    <div id="not-shown" class="section-dark">
+        <div class="content-inner">
+            <h2>What this does not show</h2>
+            <ul class="caveat-list">
+                <li><strong>One pair of machines, one run per configuration.</strong> A three-repetition benchmark agreed with the timed runs for the CPU-only split; nothing else was repeated.</li>
+                <li><strong>A laptop is not an office tower.</strong> Its memory is a third the speed of the desktop's and its processor is weaker. The plan's target hardware, used towers with two memory sticks each, has not been measured.</li>
+                <li><strong>This is a layer split, not the expert split</strong> described on the main ZynkCluster page. Layers took turns; the parallel-expert architecture that could be faster is unbuilt, and these numbers say nothing about it.</li>
+                <li><strong>Speeds are for 4-bit versions</strong> of two specific mixture-of-experts models. A dense model of the same size would be several times slower per word.</li>
+                <li><strong>Security was not addressed.</strong> llama.cpp's RPC server is unauthenticated and its own documentation says never to expose it. These runs were on a direct cable between two machines in one room. Nothing here should be run on a shared network as-is.</li>
+                <li><strong>One benchmark tool disagreed with the timed runs</strong> for the graphics-card-plus-laptop configuration and was not investigated; the timed runs are the numbers reported.</li>
+                <li><strong>Load times include reading the model from disk</strong> and, on first use, sending the laptop's layers across the link. They are not steady-state figures.</li>
+            </ul>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <section class="content-section" id="next">
+        <h2>What's next</h2>
+        <p>
+            The next step in the plan is the same measurement on two or three used office towers, wired, so the per-machine cost model can be checked on the
+            hardware the idea is actually about. After that, the questions are engineering rather than research: give weak nodes few layers, keep the prompt
+            cache warm, put the link behind proper authentication, and make the setup something a careful person can do without reading a plan document.
+        </p>
+        <p class="note">
+            Full write-ups with exact commands and logs are kept with the project's working notes. The plan document in the repository carries the
+            same numbers in context. Measurements by Matthew Skillman with Claude (Anthropic) running and recording the tests.
+        </p>
+        <div class="cta-section">
+            <a href="https://github.com/MSkill1/zynkbot/tree/local-model/labs/moe_poc" class="cta-button">Plan and notes on GitHub</a>
+            <a href="../" class="cta-button secondary">Back to ZynkCluster</a>
+        </div>
+    </section>
+</body>
+</html>
