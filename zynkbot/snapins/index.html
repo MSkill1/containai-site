@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zynkbot snap-ins, building on snap-ins, optional encrypted memory backup, and ZynkCluster.">
+    <meta name="author" content="Matthew Skillman">
+    <title>Snap-ins &amp; ZynkCluster | Zynkbot | ContainAI</title>
+    <link rel="stylesheet" href="../zynkbot.css">
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="site-nav">
+                <a class="home" href="../../">ContainAI</a><span class="sep">·</span>
+                <a href="../">Zynkbot</a><span class="sep">·</span>
+                <a href="../#download">Download</a><span class="sep">·</span>
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+                <a href="../../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+                <a href="../../sdk/">SDK</a><span class="sep">·</span>
+                <a href="../../foundation/">Foundation</a>
+            </nav>
+            <div class="breadcrumb">
+                <a href="../../">ContainAI</a> / <a href="../">Zynkbot</a> / Snap-ins &amp; ZynkCluster
+            </div>
+            <div class="logo">Zynkbot</div>
+            <div class="tagline">Privacy-first AI companion with persistent memory and cross-device sync</div>
+        </header>
+
+        <nav class="section-nav">
+            <a href="../why/">Why Zynkbot</a><span class="sep"> · </span>
+            <a href="../memory/">How Memory Works</a><span class="sep"> · </span>
+            <a href="../privacy/">Privacy</a><span class="sep"> · </span>
+            <a href="../models/">Model Independence</a><span class="sep"> · </span>
+            <a href="../safety/">Safety</a><span class="sep"> · </span>
+            <a href="../networking/">Networking</a><span class="sep"> · </span>
+            <a href="../snapins/">Snap-ins</a><span class="sep"> · </span>
+            <a href="../snapins/#zynkcluster">ZynkCluster</a><span class="sep"> · </span>
+            <a href="../#install">Quick Start</a>
+        </nav>
+
+<!-- SNAP-INS -->
+        <section id="snapins" class="content-section">
+            <h2>🧩 Snap-ins <span style="font-size: 0.55em; color: #6272a4; font-weight: 400; font-style: italic;">Experimental</span></h2>
+            <p>
+                Snap-ins are purpose-built mini-applications that run inside Zynkbot for specific
+                workflows. The therapist snap-in is a working demo of the concept — it indexes session
+                notes by patient using RAG, making them fully searchable within the knowledge base.
+                The current version is a proof of concept: indexing works, but querying through the
+                interface is not yet implemented. Snap-ins are experimental and intended as a developer
+                preview of what domain-specific tooling can look like on top of the Zynkbot platform.
+            </p>
+            <p>
+                In virtually every industry, workers could benefit from an AI with a snap-in focused
+                on their field. In our personal lives, snap-ins can draw on data accumulated over time
+                to track everything from mental and physical health to hobbies, games, and leisure activities.
+            </p>
+
+            <div class="screenshot-wrap">
+                <img src="../images/therapist_notes.png" alt="Therapist snap-in for session notes" class="screenshot" style="max-width: 640px;">
+                <div class="screenshot-caption">Therapist snap-in — session notes organized by patient, indexed locally for RAG search. Fully private, stored on device. Have a conversation about a patient with your Zynkbot, and it will have complete history and detailed notes to draw upon - no corporate servers required.</div>
+            </div>
+
+            <h3>Building on Snap-ins</h3>
+            <p>
+                Snap-ins are part of how this project sustains itself. ContainAI will develop
+                industry-specific snap-ins — tools for lawyers, medical professionals, tradespeople,
+                educators, and others — available for a monthly fee. Third-party developers are
+                explicitly welcome to build and sell their own snap-ins on the same platform. The base
+                Zynkbot app is and will remain free; the snap-in ecosystem is how the project grows
+                without becoming dependent on advertising or data collection.
+            </p>
+
+            <h3>Optional Memory Backup</h3>
+            <p>
+                Zynkbot's memory database lives entirely on your device. An optional encrypted cloud
+                backup is available now — connect your own Cloudflare R2 or S3 bucket in Settings,
+                and your memory database (including semantic embeddings, so recall works perfectly after
+                reinstall) is backed up with AES-256-GCM encryption using a passphrase only you hold.
+                The backup key never leaves your device. Nothing about this is required; it's a
+                convenience for people who want it — and your own storage means no subscription fee.
+            </p>
+        </section>
+
+        <hr class="section-divider">
+
+<!-- ZYNKCLUSTER -->
+        <section id="zynkcluster" class="content-section">
+            <h2>⚡ ZynkCluster <span style="font-size: 0.55em; color: #6272a4; font-weight: 400; font-style: italic;">Upcoming</span></h2>
+            <p>
+                Most AI models are constrained by the VRAM of a single device. A model like
+                Mixtral 8x22B requires roughly 140GB of VRAM — more than any single consumer GPU
+                can hold. ZynkCluster proposes distributing that model across multiple devices on
+                your local network, with each machine's GPU running a different part simultaneously.
+                Models that are simply out of reach on a single consumer machine become accessible
+                across hardware you already own — no cloud, no data leaving your network.
+            </p>
+            <p>
+                Zynkbot uses Mixture of Experts (MoE) models, where each query activates only a
+                small subset of the model's expert sub-networks. The number of active experts per
+                token depends on the model — Mixtral uses 2, DBRX uses 4, OLMoE uses 8. ZynkCluster
+                maps those active experts to separate devices and runs them in parallel. Unlike
+                existing distributed inference tools that pass every token through every device in
+                sequence, ZynkCluster only involves the devices that are needed — and uses them
+                at the same time.
+            </p>
+            <p>
+                ZynkCluster is built on the same device-pairing infrastructure as ZynkSync. The
+                system that already syncs your memories across devices becomes the coordination
+                layer for pooling their compute.
+            </p>
+            <p>
+                The approach is theoretically sound and grounded in published research on MoE
+                architectures. Development is ongoing; implementation will proceed as other
+                priorities, including Android support, are completed.
+            </p>
+            <div style="margin-top: 28px; display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="../../zynkcluster/" class="cta-button">Learn More</a>
+                <a href="https://github.com/MSkill1/zynkbot/tree/main/labs/moe_poc" class="cta-button secondary">Architecture &amp; Code</a>
+            </div>
+        </section>
+
+        <div style="text-align: center; padding: 20px 20px 10px;">
+            <a href="../" class="cta-button secondary">← Back to Zynkbot</a>
+            <a href="../#download" class="cta-button">Download Zynkbot</a>
+        </div>
+
+        <footer>
+            <p><strong>Zynkbot</strong> by <a href="../../">ContainAI</a></p>
+            <p style="margin-top: 10px;">
+                <a href="../../">ContainAI</a> |
+                <a href="../../sdk/">SDK</a> |
+                <a href="../../zynkcluster/">ZynkCluster</a> |
+                <a href="../../foundation/">Foundation</a> |
+                <a href="../docs/">Documentation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a> |
+                <a href="mailto:matt@containai.ai">Contact</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                Open Beta v0.9.6 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora), Android
+            </p>
+        </footer>
+    </div>
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        document.querySelectorAll('.screenshot').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
+</body>
+</html>

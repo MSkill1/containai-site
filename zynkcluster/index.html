@@ -256,6 +256,13 @@
             .diagram-block pre { font-size: 0.75rem; }
             .section-nav { overflow-x: auto; white-space: nowrap; text-align: left; padding: 12px 16px; }
         }
+
+        /* Site navigation row — the same links on every page of the site */
+        .site-nav { font-size: 0.9rem; line-height: 2.2; margin-bottom: 18px; }
+        .site-nav a { color: #8be9fd; text-decoration: none; white-space: nowrap; }
+        .site-nav a:hover { color: #50fa7b; }
+        .site-nav .home { color: #f8f8f2; font-weight: 600; }
+        .site-nav .sep { color: #44475a; margin: 0 8px; }
     </style>
     <!-- Privacy-friendly analytics by Plausible -->
     <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
@@ -267,6 +274,15 @@
 <body>
     <div class="container">
         <header>
+            <nav class="site-nav">
+                <a class="home" href="../">ContainAI</a><span class="sep">·</span>
+                <a href="../zynkbot/">Zynkbot</a><span class="sep">·</span>
+                <a href="../zynkbot/#download">Download</a><span class="sep">·</span>
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+                <a href="../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+                <a href="../sdk/">SDK</a><span class="sep">·</span>
+                <a href="../foundation/">Foundation</a>
+            </nav>
             <div class="breadcrumb">
                 <a href="../">ContainAI</a> / <a href="../zynkbot/">Zynkbot</a> / ZynkCluster
             </div>

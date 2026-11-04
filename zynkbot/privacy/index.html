@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="What privacy-first means in Zynkbot's design: local-first by default, optional API use on your terms, no account, no telemetry, AGPL v3.">
+    <meta name="author" content="Matthew Skillman">
+    <title>Privacy in Practice | Zynkbot | ContainAI</title>
+    <link rel="stylesheet" href="../zynkbot.css">
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="site-nav">
+                <a class="home" href="../../">ContainAI</a><span class="sep">·</span>
+                <a href="../">Zynkbot</a><span class="sep">·</span>
+                <a href="../#download">Download</a><span class="sep">·</span>
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+                <a href="../../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+                <a href="../../sdk/">SDK</a><span class="sep">·</span>
+                <a href="../../foundation/">Foundation</a>
+            </nav>
+            <div class="breadcrumb">
+                <a href="../../">ContainAI</a> / <a href="../">Zynkbot</a> / Privacy
+            </div>
+            <div class="logo">Zynkbot</div>
+            <div class="tagline">Privacy-first AI companion with persistent memory and cross-device sync</div>
+        </header>
+
+        <nav class="section-nav">
+            <a href="../why/">Why Zynkbot</a><span class="sep"> · </span>
+            <a href="../memory/">How Memory Works</a><span class="sep"> · </span>
+            <a href="../privacy/">Privacy</a><span class="sep"> · </span>
+            <a href="../models/">Model Independence</a><span class="sep"> · </span>
+            <a href="../safety/">Safety</a><span class="sep"> · </span>
+            <a href="../networking/">Networking</a><span class="sep"> · </span>
+            <a href="../snapins/">Snap-ins</a><span class="sep"> · </span>
+            <a href="../snapins/#zynkcluster">ZynkCluster</a><span class="sep"> · </span>
+            <a href="../#install">Quick Start</a>
+        </nav>
+
+<!-- PRIVACY IN PRACTICE -->
+        <section id="privacy" class="content-section">
+            <h2>🔒 Privacy in Practice</h2>
+
+            <p>
+                "Privacy-first" is easy to say. Here's specifically what it means in Zynkbot's design.
+            </p>
+
+            <h3>Local-First by Default</h3>
+            <p>
+                Zynkbot runs local AI models out of the box — standard .gguf format files compatible
+                with llama.cpp. When running locally, nothing leaves your device. No API call, no
+                network traffic, no external dependency. The inference happens on your CPU or GPU,
+                the memory database is a local SQLite file, and the application itself is a Tauri desktop
+                app with no telemetry or update pings.
+            </p>
+
+            <h3>Optional API Use — On Your Terms</h3>
+            <p>
+                If you want access to more capable models (GPT-4, Claude, Grok, Mistral), you can connect
+                your own API keys. When you do, your conversation text goes to that provider
+                for inference — but <strong>your memory database never does.</strong> Zynkbot constructs
+                the context window locally, retrieves relevant memories locally, and sends only the
+                assembled prompt to the API. The underlying personal data stays home.
+            </p>
+
+            <p>
+                API providers are primarily business services. Their privacy policies are driven by
+                enterprise compliance requirements and typically mandate prompt deletion within 30 days.
+                By default, your conversations are not permanently retained and are not used to train
+                their models. Zynkbot is designed to take full advantage of this — treating the API
+                as a stateless inference service, not a memory store.
+            </p>
+
+            <h3>No Account. No Login.</h3>
+            <p>
+                Once Zynkbot is installed, it just opens. There's no account to create, no email
+                verification, no password reset flow, no session that expires and locks you out.
+                Your AI assistant is on your device — you don't need anyone's permission to use it.
+            </p>
+
+            <h3>No Telemetry. No Analytics. No Tracking.</h3>
+            <p>
+                There are no usage analytics, no error reporting services, no version check pings,
+                no "help us improve" data collection. The application does not phone home in any form.
+                You can verify this by inspecting the source code — it's all there under AGPL v3.
+            </p>
+
+            <h3>The License as a Privacy Guarantee</h3>
+            <p>
+                The AGPL v3 license isn't just an open source choice — it's a structural protection.
+                AGPL requires that anyone who modifies and distributes Zynkbot must also release their
+                modifications. This prevents a company from taking the codebase, adding surveillance
+                features, and distributing a closed-source fork without disclosing what they've done.
+                The license keeps the code auditable.
+            </p>
+        </section>
+
+        <div style="text-align: center; padding: 20px 20px 10px;">
+            <a href="../" class="cta-button secondary">← Back to Zynkbot</a>
+            <a href="../#download" class="cta-button">Download Zynkbot</a>
+        </div>
+
+        <footer>
+            <p><strong>Zynkbot</strong> by <a href="../../">ContainAI</a></p>
+            <p style="margin-top: 10px;">
+                <a href="../../">ContainAI</a> |
+                <a href="../../sdk/">SDK</a> |
+                <a href="../../zynkcluster/">ZynkCluster</a> |
+                <a href="../../foundation/">Foundation</a> |
+                <a href="../docs/">Documentation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a> |
+                <a href="mailto:matt@containai.ai">Contact</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                Open Beta v0.9.6 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora), Android
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

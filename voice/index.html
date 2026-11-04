@@ -40,10 +40,24 @@
   .err { color: var(--warn); font-size: 0.95rem; }
   a.save { color: var(--accent); }
   @media (prefers-reduced-motion: no-preference) { .counter .n.bump { animation: bump 220ms ease-out; } @keyframes bump { from { transform: scale(1.12); } to { transform: none; } } }
+  /* Site navigation row — the same links on every page of the site */
+  .site-nav { font-size: 0.9rem; line-height: 2; color: var(--muted); }
+  .site-nav a { color: var(--accent); text-decoration: none; white-space: nowrap; }
+  .site-nav .home { color: var(--fg); font-weight: 600; }
+  .site-nav .sep { color: var(--line); margin: 0 6px; }
 </style>
 </head>
 <body>
 <main>
+  <nav class="site-nav">
+    <a class="home" href="../">ContainAI</a><span class="sep">·</span>
+    <a href="../zynkbot/">Zynkbot</a><span class="sep">·</span>
+    <a href="../zynkbot/#download">Download</a><span class="sep">·</span>
+    <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+    <a href="../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+    <a href="../sdk/">SDK</a><span class="sep">·</span>
+    <a href="../foundation/">Foundation</a>
+  </nav>
   <h1>Help teach Zynkbot to know who is talking</h1>
   <p class="lead">Say “Hey Zynk” twenty times. It takes about a minute. Nothing leaves your phone until you tap Send.</p>
 

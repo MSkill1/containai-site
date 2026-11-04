@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zynkbot keeps your memory separate from the model: switch between local models, GPT-4, Claude, Grok and Mistral; Ensemble Mode; web search.">
+    <meta name="author" content="Matthew Skillman">
+    <title>Model-Independent Memory | Zynkbot | ContainAI</title>
+    <link rel="stylesheet" href="../zynkbot.css">
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="site-nav">
+                <a class="home" href="../../">ContainAI</a><span class="sep">·</span>
+                <a href="../">Zynkbot</a><span class="sep">·</span>
+                <a href="../#download">Download</a><span class="sep">·</span>
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+                <a href="../../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+                <a href="../../sdk/">SDK</a><span class="sep">·</span>
+                <a href="../../foundation/">Foundation</a>
+            </nav>
+            <div class="breadcrumb">
+                <a href="../../">ContainAI</a> / <a href="../">Zynkbot</a> / Model Independence
+            </div>
+            <div class="logo">Zynkbot</div>
+            <div class="tagline">Privacy-first AI companion with persistent memory and cross-device sync</div>
+        </header>
+
+        <nav class="section-nav">
+            <a href="../why/">Why Zynkbot</a><span class="sep"> · </span>
+            <a href="../memory/">How Memory Works</a><span class="sep"> · </span>
+            <a href="../privacy/">Privacy</a><span class="sep"> · </span>
+            <a href="../models/">Model Independence</a><span class="sep"> · </span>
+            <a href="../safety/">Safety</a><span class="sep"> · </span>
+            <a href="../networking/">Networking</a><span class="sep"> · </span>
+            <a href="../snapins/">Snap-ins</a><span class="sep"> · </span>
+            <a href="../snapins/#zynkcluster">ZynkCluster</a><span class="sep"> · </span>
+            <a href="../#install">Quick Start</a>
+        </nav>
+
+<!-- MODEL INDEPENDENCE -->
+        <div id="models" class="section-dark">
+            <div class="content-inner">
+                <h2>🎭 Model-Independent Memory</h2>
+
+                <p>
+                    Most AI tools are vertically integrated: the memory lives in the same system as
+                    the model. If you want to switch models, you lose your history.
+                </p>
+
+                <p>
+                    Zynkbot separates the memory layer from the model layer entirely. Your accumulated
+                    context — everything Zynkbot knows about you — lives in a local database under
+                    your control, completely independent of which AI you're talking to. Switch between
+                    a local model, GPT-4, Claude, Grok, and Mistral in the same conversation, and Zynkbot
+                    maintains continuity throughout. <strong>The model is the face. The memory is the
+                    relationship.</strong>
+                </p>
+
+                <p>
+                    In practice this means you can use the most capable model available for complex
+                    reasoning: Claude for an ethics question, a local model for private tasks, or a specialized model for
+                    specific domains — without any of those choices breaking the continuity of
+                    what Zynkbot knows about you. You're not locked into any provider, and your
+                    personal context doesn't live in any of their systems.
+                </p>
+
+                <p>
+                    For local inference, Zynkbot supports <strong>Ollama</strong> and any OpenAI-compatible server (LM Studio, llama-server) as first-class backends alongside the cloud providers. Run Llama, Qwen, DeepSeek, or any GGUF model on your own hardware — no API key, no subscription, nothing leaving your machine. On Android, your phone can proxy through your desktop's Ollama instance over your home network via ZynkSync.
+                </p>
+
+                <p>
+                    The Ensemble Mode takes this further: query multiple models simultaneously on
+                    the same question, see their responses side by side, and let Zynkbot identify
+                    consensus and flag disagreements. Useful for high-stakes questions where you
+                    want more than one perspective, or for fact-checking responses against each other.
+                    Ensemble mode results can be introduced at any point in an ongoing conversation.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="../images/ensemble_modal.png" alt="Multi-Model Ensemble modal" class="screenshot" style="max-width: 680px;">
+                    <div class="screenshot-caption">Ensemble mode — select any combination of API and local models to answer the same question simultaneously</div>
+                </div>
+
+                <h3>Web Search</h3>
+                <p>
+                    When a question requires current information beyond what's in your memory or
+                    knowledge base, Zynkbot can perform a web search and incorporate the results
+                    into its response. Like everything else, this is on your terms — triggered
+                    explicitly, not automatically.  You can approve the search query or alter it if you choose.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="../images/web_search.png" alt="Zynkbot web search in action" class="screenshot" style="max-width: 780px;">
+                    <div class="screenshot-caption">Web search runs inline and the results are incorporated into the response</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 20px 20px 10px;">
+            <a href="../" class="cta-button secondary">← Back to Zynkbot</a>
+            <a href="../#download" class="cta-button">Download Zynkbot</a>
+        </div>
+
+        <footer>
+            <p><strong>Zynkbot</strong> by <a href="../../">ContainAI</a></p>
+            <p style="margin-top: 10px;">
+                <a href="../../">ContainAI</a> |
+                <a href="../../sdk/">SDK</a> |
+                <a href="../../zynkcluster/">ZynkCluster</a> |
+                <a href="../../foundation/">Foundation</a> |
+                <a href="../docs/">Documentation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a> |
+                <a href="mailto:matt@containai.ai">Contact</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                Open Beta v0.9.6 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora), Android
+            </p>
+        </footer>
+    </div>
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        document.querySelectorAll('.screenshot').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
+</body>
+</html>

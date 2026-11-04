@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How Zynkbot's memory works: three context sources, hybrid entity and semantic search, transparent recall, full control, and the Einstein demo.">
+    <meta name="author" content="Matthew Skillman">
+    <title>How Memory Works | Zynkbot | ContainAI</title>
+    <link rel="stylesheet" href="../zynkbot.css">
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-YPcZLzhPUW1c9LTmUFGL_.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="site-nav">
+                <a class="home" href="../../">ContainAI</a><span class="sep">·</span>
+                <a href="../">Zynkbot</a><span class="sep">·</span>
+                <a href="../#download">Download</a><span class="sep">·</span>
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+                <a href="../../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+                <a href="../../sdk/">SDK</a><span class="sep">·</span>
+                <a href="../../foundation/">Foundation</a>
+            </nav>
+            <div class="breadcrumb">
+                <a href="../../">ContainAI</a> / <a href="../">Zynkbot</a> / How Memory Works
+            </div>
+            <div class="logo">Zynkbot</div>
+            <div class="tagline">Privacy-first AI companion with persistent memory and cross-device sync</div>
+        </header>
+
+        <nav class="section-nav">
+            <a href="../why/">Why Zynkbot</a><span class="sep"> · </span>
+            <a href="../memory/">How Memory Works</a><span class="sep"> · </span>
+            <a href="../privacy/">Privacy</a><span class="sep"> · </span>
+            <a href="../models/">Model Independence</a><span class="sep"> · </span>
+            <a href="../safety/">Safety</a><span class="sep"> · </span>
+            <a href="../networking/">Networking</a><span class="sep"> · </span>
+            <a href="../snapins/">Snap-ins</a><span class="sep"> · </span>
+            <a href="../snapins/#zynkcluster">ZynkCluster</a><span class="sep"> · </span>
+            <a href="../#install">Quick Start</a>
+        </nav>
+
+<!-- HOW MEMORY WORKS -->
+        <div id="memory" class="section-dark">
+            <div class="content-inner">
+                <h2>🧠 How Memory Works</h2>
+
+                <p>
+                    Every time you send a message, Zynkbot assembles a context window from three sources
+                    before anything reaches a model. Understanding what goes into that prompt explains
+                    why conversations feel continuous and personal.
+                </p>
+
+                <div class="memory-layers">
+                    <div class="memory-layer">
+                        <h4>Your Accumulated Personal Memories</h4>
+                        <p>
+                            Facts and context built from your conversations over time — your preferences,
+                            your history, the things you've mentioned in passing. Zynkbot retrieves the
+                            most relevant ones for each query and includes them in the prompt automatically.
+                            You can edit, delete, or add memories at any time.
+                        </p>
+                    </div>
+                    <div class="memory-layer">
+                        <h4>Your Current Conversation</h4>
+                        <p>
+                            The conversation you're having right now. Zynkbot maintains full context
+                            within a session so responses stay coherent as the discussion develops.
+                        </p>
+                    </div>
+                    <div class="memory-layer">
+                        <h4>Your Knowledge Base (optional)</h4>
+                        <p>
+                            Documents you've uploaded (PDFs, text files, code, notes) that Zynkbot can
+                            query with retrieval-augmented generation. When relevant content is found,
+                            it's included in the prompt alongside your memories. Your files are processed
+                            locally and never leave your device unless you choose.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="screenshot-wrap">
+                    <img src="../images/Kbase.png" alt="Knowledge Base Document Manager" class="screenshot" style="max-width: 640px;">
+                    <div class="screenshot-caption">Knowledge Base Document Manager — index documents into namespaced folders for RAG search</div>
+                </div>
+
+                <h3>Hybrid Search: Entity + Semantic</h3>
+                <p>
+                    When you ask a question, Zynkbot doesn't just do a keyword search or a
+                    vector similarity search. It uses a two-stage hybrid approach: first, it extracts
+                    named entities from your query (people, places, dates, concepts) using a local
+                    BERT AI model; then it combines those entity matches with semantic similarity search
+                    across all three memory layers. The result is retrieval that understands both
+                    <em>what you're talking about</em> and <em>what you mean</em>.
+                </p>
+
+                <h3>Transparent Recall</h3>
+                <p>
+                    After every response, Zynkbot shows you exactly which memories it drew on to
+                    answer your question. You can open the Memory Manager, see the full list, and
+                    decide whether those memories are accurate, outdated, or should be removed.
+                    If two memories contradict each other, Zynkbot surfaces the conflict and asks
+                    you to resolve it rather than silently picking one.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="../images/family_convo.png" alt="Zynkbot conversation showing recalled memories" class="screenshot" style="max-width: 780px;">
+                    <div class="screenshot-caption">Every response shows how many memories were recalled — click to see exactly which ones shaped the answer</div>
+                </div>
+
+                <p>
+                    When you tell Zynkbot something that contradicts what it already knows, it
+                    doesn't silently pick one version or quietly update the record. It surfaces
+                    the conflict directly and lets you decide how to resolve it — keep the old
+                    memory, keep the new one, store both with an explanation, or mark them as
+                    an unresolved contradiction.
+                </p>
+
+                <div class="screenshot-pair">
+                    <div class="screenshot-wrap">
+                        <img src="../images/married_convo.png" alt="Zynkbot detecting a contradiction" class="screenshot">
+                        <div class="screenshot-caption">Zynkbot politely pushes back when a statement contradicts stored memory</div>
+                    </div>
+                    <div class="screenshot-wrap">
+                        <img src="../images/conflict_card.png" alt="The conflict card: a new statement against a stored memory" class="screenshot">
+                        <div class="screenshot-caption">The conflict card — you decide how to resolve it, with both sides in front of you</div>
+                    </div>
+                </div>
+
+                <div class="screenshot-wrap">
+                    <img src="../images/map_zoomed.png" alt="The memory map, zoomed in on one memory" class="screenshot">
+                    <div class="screenshot-caption">On the memory map a contradiction is a red line and the explanation that resolves it is pink — nothing is hidden</div>
+                </div>
+
+                <h3>Full Control</h3>
+                <p>
+                    Every memory is editable. Every memory is deletable. You can tag memories with
+                    namespace labels to organize and filter them — for example, separating work context
+                    from personal context. The entire memory database is a local SQLite file
+                    stored on your machine. You can back it up, export it, or wipe it entirely
+                    at any time.
+                </p>
+
+                <div class="screenshot-wrap">
+                    <img src="../images/MemManager.png" alt="Memory Manager" class="screenshot">
+                    <div class="screenshot-caption">Memory Manager — search, browse, and edit every memory. Filter by namespace, view relationships, delete anything.</div>
+                </div>
+
+                <p>
+                    Memories aren't a flat list. Each one can update, contradict or relate to
+                    others, and every memory names the people, places and things in it. The Memory
+                    Map draws all of that: a ring for each person or place, the memories that mention
+                    it gathered around it, and the relationships between memories as coloured lines.
+                    Tap any ring or dot to read it.
+                </p>
+
+                <div class="screenshot-pair">
+                    <div class="screenshot-wrap">
+                        <img src="../images/map_whole.png" alt="The memory map of the Einstein demo" class="screenshot">
+                        <div class="screenshot-caption">The whole Einstein demo as a map — memories coloured by category, gathered around the people, places and things they mention</div>
+                    </div>
+                    <div class="screenshot-wrap">
+                        <img src="../images/map_hub.png" alt="One place on the memory map and the memories that mention it" class="screenshot">
+                        <div class="screenshot-caption">One place on the map: Germany, and the five memories that mention it</div>
+                    </div>
+                </div>
+
+                <div class="pull-quote">
+                    <p>
+                        Try it immediately after install: load the built-in Einstein demo set (67
+                        memories, written the way Zynkbot writes them) and ask questions from his perspective. Watch Zynkbot
+                        surface exactly which memories shaped each answer — then edit one and ask
+                        the same question again. The answer changes.
+                    </p>
+                </div>
+
+                <div class="demo-callout">
+                    <h3>🧪 Einstein Demo</h3>
+                    <p>
+                        Included with every installation. Load Einstein's life as 67 memories with their links, and explore
+                        how the memory system shapes responses in real time.
+                    </p>
+                    <div class="demo-grid">
+                        <div class="demo-card blue">
+                            <strong>Try asking:</strong>
+                            <ul>
+                                <li>"What is my theory about the photoelectric effect?"</li>
+                                <li>"Tell me about my relationship with Mileva"</li>
+                                <li>"What did I think about quantum mechanics?"</li>
+                            </ul>
+                        </div>
+                        <div class="demo-card green">
+                            <strong>Then:</strong>
+                            <ul>
+                                <li>Open Memory Manager and edit a memory</li>
+                                <li>Ask the same question — the answer changes</li>
+                                <li>Open the Memory Map to see what the memories share</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 20px 20px 10px;">
+            <a href="../" class="cta-button secondary">← Back to Zynkbot</a>
+            <a href="../#download" class="cta-button">Download Zynkbot</a>
+        </div>
+
+        <footer>
+            <p><strong>Zynkbot</strong> by <a href="../../">ContainAI</a></p>
+            <p style="margin-top: 10px;">
+                <a href="../../">ContainAI</a> |
+                <a href="../../sdk/">SDK</a> |
+                <a href="../../zynkcluster/">ZynkCluster</a> |
+                <a href="../../foundation/">Foundation</a> |
+                <a href="../docs/">Documentation</a> |
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a> |
+                <a href="https://github.com/MSkill1/zynkbot/blob/main/LICENSE">License</a> |
+                <a href="mailto:matt@containai.ai">Contact</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Copyright &copy; 2024-2026 Matthew Skillman / ContainAI<br>
+                Open Beta v0.9.6 &mdash; Windows 10+, Linux (Ubuntu 22.04+, Arch, Fedora), Android
+            </p>
+        </footer>
+    </div>
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        document.querySelectorAll('.screenshot').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
+</body>
+</html>

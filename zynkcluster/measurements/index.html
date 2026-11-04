@@ -266,11 +266,27 @@
         .caveat-list li { margin: 8px 0 8px 18px; }
         code { background: #21222c; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
         @media (max-width: 700px) { .meas-table { font-size: 0.85rem; } .meas-table th, .meas-table td { padding: 7px 6px; } }
+
+        /* Site navigation row — the same links on every page of the site */
+        .site-nav { font-size: 0.9rem; line-height: 2.2; margin-bottom: 18px; }
+        .site-nav a { color: #8be9fd; text-decoration: none; white-space: nowrap; }
+        .site-nav a:hover { color: #50fa7b; }
+        .site-nav .home { color: #f8f8f2; font-weight: 600; }
+        .site-nav .sep { color: #44475a; margin: 0 8px; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <nav class="site-nav">
+                <a class="home" href="../../">ContainAI</a><span class="sep">·</span>
+                <a href="../../zynkbot/">Zynkbot</a><span class="sep">·</span>
+                <a href="../../zynkbot/#download">Download</a><span class="sep">·</span>
+                <a href="https://github.com/MSkill1/zynkbot">GitHub</a><span class="sep">·</span>
+                <a href="../../zynkcluster/">ZynkCluster</a><span class="sep">·</span>
+                <a href="../../sdk/">SDK</a><span class="sep">·</span>
+                <a href="../../foundation/">Foundation</a>
+            </nav>
             <div class="breadcrumb">
                 <a href="../../">ContainAI</a> / <a href="../../zynkbot/">Zynkbot</a> / <a href="../">ZynkCluster</a> / Measurements
             </div>
